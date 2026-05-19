@@ -15,14 +15,11 @@
   --grey2:#5a5a5a;
   --black:#000000;
   --white:#ffffff;
-
-  /* Tints derived from brand palette */
   --red1-tint:#fbe8eb;
   --red2-tint:#f0dde0;
   --grey1-tint:#f0f0f0;
   --grey2-tint:#e6e6e6;
   --grey-light:#f5f5f5;
-
   --border:rgba(0,0,0,.1);
   --border2:rgba(0,0,0,.18);
   --radius:8px;
@@ -33,29 +30,38 @@ html{font-size:16px;-webkit-font-smoothing:antialiased}
 body{background:var(--grey-light);color:var(--black);font-family:'DM Sans',sans-serif;font-weight:400;line-height:1.6}
 
 /* ── HEADER ── */
-.masthead{background:var(--black);color:var(--white);padding:3rem 4rem 2.5rem;position:relative;overflow:hidden}
+.masthead{background:var(--black);color:var(--white);padding:2.5rem 4rem 2.5rem;position:relative;overflow:hidden}
 .masthead::before{content:'';position:absolute;right:-60px;top:-60px;width:320px;height:320px;border-radius:50%;border:60px solid rgba(255,255,255,.03)}
 .masthead::after{content:'';position:absolute;right:80px;bottom:-80px;width:200px;height:200px;border-radius:50%;border:40px solid rgba(255,255,255,.03)}
-.mast-rule{width:48px;height:3px;background:var(--red1);border-radius:1px;margin-bottom:1.5rem}
-.mast-eyebrow{font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--grey1);margin-bottom:.75rem}
-.mast-title{font-family:'DM Serif Display',serif;font-size:clamp(2rem,4vw,3rem);line-height:1.05;margin-bottom:.65rem;color:var(--white)}
+.mast-rule{width:48px;height:3px;background:var(--red1);border-radius:1px;margin-bottom:1.25rem}
+.mast-eyebrow{font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--grey1);margin-bottom:.85rem}
+.mast-scope{display:inline-flex;align-items:center;gap:.6rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:4px;padding:.35rem .8rem;font-size:12px;color:rgba(255,255,255,.7);letter-spacing:.02em;margin-bottom:1.1rem}
+.mast-scope-dot{width:6px;height:6px;background:var(--red1);border-radius:50%;flex-shrink:0}
+.mast-title{font-family:'DM Serif Display',serif;font-size:clamp(1.9rem,4vw,2.8rem);line-height:1.05;margin-bottom:.5rem;color:var(--white)}
 .mast-title em{font-style:italic;color:var(--grey1)}
-.mast-sub{font-size:14px;color:var(--grey1);max-width:580px;line-height:1.7}
-.mast-meta{display:flex;gap:2rem;margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap}
+.mast-meta{display:flex;gap:2rem;margin-top:1.75rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.1);flex-wrap:wrap}
 .mast-meta-item{font-size:11px;color:var(--grey1)}
 .mast-meta-item strong{display:block;color:var(--white);font-size:13px;font-weight:500;margin-bottom:.15rem}
 
 /* ── LAYOUT ── */
-.page{max-width:1060px;margin:0 auto;padding:3rem 4rem 5rem}
+.page{max-width:1080px;margin:0 auto;padding:3rem 4rem 5rem}
 .section{margin-bottom:3.5rem}
 .section-label{font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--grey1);margin-bottom:1.25rem;display:flex;align-items:center;gap:10px}
 .section-label::after{content:'';flex:1;height:1px;background:var(--border)}
 .section-title{font-family:'DM Serif Display',serif;font-size:1.75rem;line-height:1.2;margin-bottom:.5rem;color:var(--black)}
-.section-body{font-size:14px;color:var(--grey2);line-height:1.7;max-width:700px}
+.section-body{font-size:14px;color:var(--grey2);line-height:1.7;max-width:720px}
 
-/* ── CALLOUT ── */
-.callout-strip{background:var(--red1);color:var(--white);padding:1rem 1.5rem;border-radius:var(--radius);font-size:13px;line-height:1.65;margin-bottom:2.5rem}
-.callout-strip strong{font-weight:600}
+/* ── FRAMING NOTE ── */
+.framing-note{background:var(--white);border:1px solid var(--border);border-left:3px solid var(--red1);border-radius:var(--radius);padding:1rem 1.25rem;font-size:13px;color:var(--grey2);line-height:1.65;margin-bottom:1.5rem}
+.framing-note strong{color:var(--black)}
+.framing-row{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-top:.85rem}
+.framing-pill{background:var(--grey-light);border:1px solid var(--border);border-radius:6px;padding:.55rem .85rem;font-size:12px}
+.framing-pill strong{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--grey2);margin-bottom:.2rem}
+
+/* ── MATRIX LEGEND ── */
+.matrix-legend{display:flex;gap:1.5rem;flex-wrap:wrap;margin-bottom:1rem;padding:.65rem 1rem;background:var(--grey1-tint);border-radius:6px;font-size:12px;color:var(--grey2)}
+.ml-item{display:flex;align-items:center;gap:.5rem}
+.ml-badge{display:inline-block;padding:.15rem .55rem;border-radius:3px;font-size:11px;font-weight:500}
 
 /* ── SUMMARY CARDS ── */
 .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:3rem}
@@ -68,23 +74,34 @@ body{background:var(--grey-light);color:var(--black);font-family:'DM Sans',sans-
 .card-value.neutral{color:var(--black)}
 .card-sub{font-size:11px;color:var(--grey1);margin-top:.4rem;line-height:1.4}
 
-/* ── MATRIX TABLE ── */
+/* ── TABLE ── */
 .matrix-wrap{overflow-x:auto;margin-bottom:1rem}
 table{width:100%;border-collapse:collapse;font-size:13px}
 thead tr{border-bottom:2px solid var(--black)}
-th{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:.7rem 1rem;text-align:left;color:var(--grey2)}
+th{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;padding:.7rem .85rem;text-align:left;color:var(--grey2)}
 th.num{text-align:center}
-td{padding:.85rem 1rem;border-bottom:1px solid var(--border);vertical-align:top;color:var(--grey2);line-height:1.5}
+td{padding:.8rem .85rem;border-bottom:1px solid var(--border);vertical-align:top;color:var(--grey2);line-height:1.5}
 td.content-type{font-weight:500;color:var(--black);white-space:nowrap}
 td.what{font-size:12px;color:var(--grey1)}
 td.num{text-align:center;font-size:12px}
-td.num span{display:inline-block;padding:.2rem .6rem;border-radius:4px;white-space:nowrap}
+td.num span{display:inline-block;padding:.2rem .55rem;border-radius:4px;white-space:nowrap}
 .ot-base{background:var(--grey1-tint);color:var(--grey2)}
 .ot-real{background:var(--red1-tint);color:var(--red1)}
 .fs-base{background:var(--grey2-tint);color:var(--grey2)}
 .fs-real{background:var(--red2-tint);color:var(--red2)}
+.loop-cell{background:#f7f7f7;color:var(--grey2);font-size:11px;text-align:center;white-space:nowrap}
+.loop-badge{display:inline-block;padding:.2rem .55rem;border-radius:4px;background:var(--grey2-tint);color:var(--grey2);font-size:11px}
 .multi-row td{background:var(--grey1-tint);font-size:12px;color:var(--grey1);font-style:italic}
-tfoot td{padding-top:1rem;font-size:11px;color:var(--grey1);font-style:italic;border-top:1px solid var(--border)}
+tfoot td{padding-top:.9rem;font-size:11px;color:var(--grey1);font-style:italic;border-top:1px solid var(--border)}
+
+/* ── FACT-FINDER ── */
+.ff-notice{display:flex;align-items:flex-start;gap:.85rem;background:var(--grey1-tint);border:1px solid var(--border2);border-left:3px solid var(--grey2);border-radius:var(--radius);padding:1rem 1.25rem;font-size:13px;color:var(--grey2);line-height:1.65;margin-bottom:.5rem}
+.ff-notice strong{color:var(--black)}
+.ff-notice-icon{font-size:1.2rem;font-weight:700;color:var(--grey2);flex-shrink:0;line-height:1.3}
+.ff-base{background:var(--grey1-tint);color:var(--grey2)}
+.ff-real{background:var(--grey2-tint);color:var(--black)}
+.ff-loop-shared{background:#ebebeb;color:var(--grey2);font-size:11px}
+.ff-loop-own{background:var(--grey2-tint);color:var(--grey2);font-size:11px}
 
 /* ── CHART PANELS ── */
 .chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:2rem}
@@ -124,13 +141,6 @@ tfoot td{padding-top:1rem;font-size:11px;color:var(--grey1);font-style:italic;bo
 .ins-bar{height:3px;border-radius:2px;background:var(--grey2-tint);margin-top:.9rem;overflow:hidden}
 .ins-fill{height:100%;border-radius:2px}
 
-/* ── FACT-FINDER ── */
-.ff-notice{display:flex;align-items:flex-start;gap:1rem;background:var(--grey1-tint);border:1px solid var(--border2);border-left:3px solid var(--grey2);border-radius:var(--radius);padding:1rem 1.25rem;font-size:13px;color:var(--grey2);line-height:1.65;margin-bottom:.5rem}
-.ff-notice strong{color:var(--black)}
-.ff-notice-icon{font-size:1.25rem;font-weight:700;color:var(--grey2);flex-shrink:0;line-height:1.3}
-.ff-base{background:var(--grey1-tint);color:var(--grey2)}
-.ff-real{background:var(--grey2-tint);color:var(--black)}
-
 /* ── RECOMMENDATIONS ── */
 .recs{display:grid;grid-template-columns:1fr;gap:0}
 .rec{display:grid;grid-template-columns:2.5rem 1fr;gap:1rem;padding:1.25rem 0;border-bottom:1px solid var(--border);align-items:start}
@@ -155,6 +165,7 @@ tfoot td{padding-top:1rem;font-size:11px;color:var(--grey1);font-style:italic;bo
   .controls-row{grid-template-columns:1fr}
   .result-grid{grid-template-columns:1fr}
   .mast-meta{flex-wrap:wrap;gap:1rem}
+  .framing-row{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -162,35 +173,34 @@ tfoot td{padding-top:1rem;font-size:11px;color:var(--grey1);font-style:italic;bo
 
 <header class="masthead">
   <div class="mast-rule"></div>
-  <div class="mast-eyebrow">Internal · Digital Content Operations</div>
-  <h1 class="mast-title">Content Effort <em>&</em> Replication Analysis<br>OpenText vs FirstSpirit</h1>
-  <p class="mast-sub">A full-picture view of creation and replication effort across markets — including the overhead the base matrix intentionally excludes: feedback loops, subsidiary approvals, and translation review cycles.</p>
+  <div class="mast-eyebrow">Internal · RWE Digital Content &amp; Experience</div>
+  <div class="mast-scope">
+    <div class="mast-scope-dot"></div>
+    Digital Content · Creation &amp; Replication · Estimated effort per market
+  </div>
+  <h1 class="mast-title">Content Effort <em>&amp;</em> Replication Analysis<br>OpenText vs FirstSpirit vs Fact-FINDER</h1>
   <div class="mast-meta">
-    <div class="mast-meta-item"><strong>Scope</strong>All digital content types</div>
-    <div class="mast-meta-item"><strong>Systems</strong>OpenText · FirstSpirit</div>
-    <div class="mast-meta-item"><strong>Coverage</strong>12 global markets</div>
-    <div class="mast-meta-item"><strong>Note</strong>Excludes IT issues by design</div>
+    <div class="mast-meta-item"><strong>Systems</strong>OpenText · FirstSpirit · Fact-FINDER</div>
+    <div class="mast-meta-item"><strong>Markets</strong>12</div>
+    <div class="mast-meta-item"><strong>Team capacity</strong>2 FTEs</div>
+    <div class="mast-meta-item"><strong>IT issues</strong>Always excluded</div>
   </div>
 </header>
 
 <main class="page">
 
-  <div class="callout-strip">
-    <strong>Important framing:</strong> The base matrix is accurate within its stated scope — but it excludes IT issues, subsidiary feedback loops, translation QA, and approval cycles. These are not exceptions. They are structural parts of every cross-market deployment. This document adds them back and benchmarks the result against the industry.
-  </div>
-
-  <!-- CARDS -->
+  <!-- AT A GLANCE -->
   <div class="section-label">At a glance</div>
   <div class="cards">
     <div class="card">
-      <div class="card-label">Worst-case single task (OT, with feedback loops)</div>
+      <div class="card-label">Worst-case single market<br>(OT realistic + Fact-FINDER)</div>
       <div class="card-value danger">12–15</div>
-      <div class="card-sub">days for a new original page incl. 4–5 days subsidiary review</div>
+      <div class="card-sub">days combined — new original page in OT + full Fact-FINDER market setup, incl. all feedback</div>
     </div>
     <div class="card">
-      <div class="card-label">Real overhead multiplier vs. base matrix</div>
-      <div class="card-value warn">2–3×</div>
-      <div class="card-sub">once feedback loops and delays are factored in</div>
+      <div class="card-label">Team delivering this across all markets</div>
+      <div class="card-value warn">2 FTEs</div>
+      <div class="card-sub">managing content creation, replication, and discovery across 12 markets</div>
     </div>
     <div class="card">
       <div class="card-label">FirstSpirit advantage over OpenText (replications)</div>
@@ -204,21 +214,40 @@ tfoot td{padding-top:1rem;font-size:11px;color:var(--grey1);font-style:italic;bo
     </div>
   </div>
 
-  <!-- MATRIX -->
+  <!-- SOURCE MATRIX -->
   <div class="section">
     <div class="section-label">The source matrix</div>
-    <div class="section-title">Base estimates — as declared</div>
-    <p class="section-body" style="margin-bottom:1.25rem">Per market. Does not include IT issues, feedback loops, or other delays. Architecture changes expressed in hours.</p>
+    <div class="section-title">Base estimates — CMS effort</div>
+
+    <div class="framing-note">
+      <strong>How to read this table.</strong> All figures are per market. IT issues are always excluded — these are treated as exceptions, not variables. The three columns are defined as follows:
+      <div class="framing-row">
+        <div class="framing-pill">
+          <strong>Base</strong>
+          Average editing time in the CMS only — no delays, no waiting, no external dependencies.
+        </div>
+        <div class="framing-pill">
+          <strong>Feedback loop</strong>
+          Fixed at <strong>4 days</strong> per market — subsidiary review, translation QA, and approval. Identical for OT and FS as it is independent of the system.
+        </div>
+        <div class="framing-pill">
+          <strong>Realistic</strong>
+          Base + 4-day feedback loop. This is the number that should be used in planning. IT delays and exceptions remain outside both figures.
+        </div>
+      </div>
+    </div>
+
     <div class="matrix-wrap">
       <table>
         <thead>
           <tr>
-            <th style="width:18%">Content type</th>
-            <th style="width:28%">What's involved</th>
-            <th class="num" style="width:13%">OT base</th>
-            <th class="num" style="width:13%">OT realistic*</th>
-            <th class="num" style="width:13%">FS base</th>
-            <th class="num" style="width:13%">FS realistic*</th>
+            <th style="width:17%">Content type</th>
+            <th style="width:24%">What's involved</th>
+            <th class="num" style="width:10%">OT base</th>
+            <th class="num" style="width:10%">FS base</th>
+            <th class="num" style="width:9%">+ Feedback</th>
+            <th class="num" style="width:10%">OT realistic</th>
+            <th class="num" style="width:10%">FS realistic</th>
           </tr>
         </thead>
         <tbody>
@@ -226,40 +255,44 @@ tfoot td{padding-top:1rem;font-size:11px;color:var(--grey1);font-style:italic;bo
             <td class="content-type">Original page<br><small style="font-weight:400;color:var(--grey1)">(new content)</small></td>
             <td class="what">Concept, mockups, visuals, IA, media + CMS implementation</td>
             <td class="num"><span class="ot-base">4–5 days</span></td>
-            <td class="num"><span class="ot-real">8–10 days</span></td>
             <td class="num"><span class="fs-base">2–5 days</span></td>
-            <td class="num"><span class="fs-real">6–10 days</span></td>
+            <td class="loop-cell"><span class="loop-badge">+ 4 days</span></td>
+            <td class="num"><span class="ot-real">8–9 days</span></td>
+            <td class="num"><span class="fs-real">6–9 days</span></td>
           </tr>
           <tr>
             <td class="content-type">Replicated page<br><small style="font-weight:400;color:var(--grey1)">with updates</small></td>
             <td class="what">Source mapping + update preparation + translation / replication in CMS</td>
             <td class="num"><span class="ot-base">2–4 days</span></td>
-            <td class="num"><span class="ot-real">6–9 days</span></td>
             <td class="num"><span class="fs-base">2–3 days</span></td>
-            <td class="num"><span class="fs-real">6–8 days</span></td>
+            <td class="loop-cell"><span class="loop-badge">+ 4 days</span></td>
+            <td class="num"><span class="ot-real">6–8 days</span></td>
+            <td class="num"><span class="fs-real">6–7 days</span></td>
           </tr>
           <tr>
             <td class="content-type">Replicated page<br><small style="font-weight:400;color:var(--grey1)">without updates</small></td>
             <td class="what">Source mapping + translation / replication in CMS</td>
             <td class="num"><span class="ot-base">2–3 days</span></td>
-            <td class="num"><span class="ot-real">5–8 days</span></td>
             <td class="num"><span class="fs-base">1–2 days</span></td>
-            <td class="num"><span class="fs-real">4–7 days</span></td>
+            <td class="loop-cell"><span class="loop-badge">+ 4 days</span></td>
+            <td class="num"><span class="ot-real">6–7 days</span></td>
+            <td class="num"><span class="fs-real">5–6 days</span></td>
           </tr>
           <tr>
             <td class="content-type">Architecture changes</td>
             <td class="what">Highly dependent on complexity — downstream unblocking effect</td>
             <td class="num"><span class="ot-base">1–6 hrs</span></td>
-            <td class="num"><span class="ot-real">+0.5–1 day</span></td>
             <td class="num"><span class="fs-base">1–3 hrs</span></td>
-            <td class="num"><span class="fs-real">+0.5–1 day</span></td>
+            <td class="loop-cell"><span class="loop-badge">minimal</span></td>
+            <td class="num"><span class="ot-real">+ 0.5–1 day</span></td>
+            <td class="num"><span class="fs-real">+ 0.5–1 day</span></td>
           </tr>
           <tr class="multi-row">
-            <td colspan="6">× number of markets requesting — all line items above multiply per market. At 12 markets, a single replicated page with updates represents 72–108 realistic days of effort.</td>
+            <td colspan="7">× 12 markets — all line items above multiply per market. A replicated page with updates across all markets represents 72–96 days realistic (OT) or 72–84 days realistic (FS).</td>
           </tr>
         </tbody>
         <tfoot>
-          <tr><td colspan="6">* Realistic = base + estimated 3–5 days per market for subsidiary review, translation QA, and approval. IT delays and system outages not included.</td></tr>
+          <tr><td colspan="7">IT issues, system outages, and exceptional delays are always excluded from both base and realistic figures. They should be flagged separately when known.</td></tr>
         </tfoot>
       </table>
     </div>
@@ -268,67 +301,73 @@ tfoot td{padding-top:1rem;font-size:11px;color:var(--grey1);font-style:italic;bo
   <!-- FACT-FINDER -->
   <div class="section">
     <div class="section-label">Additional system layer</div>
-    <div class="section-title">Fact-Finder — effort on top of CMS</div>
-    <p class="section-body" style="margin-bottom:1rem">Fact-Finder is our product search, navigation, and discovery platform — not a CMS. Its content effort does not replace CMS work; it sits on top of it. Any deployment touching product discovery, search results, category pages, or campaign slots requires Fact-Finder configuration in addition to whatever the CMS task already costs.</p>
+    <div class="section-title">Fact-FINDER — effort on top of CMS</div>
+    <p class="section-body" style="margin-bottom:1rem">Fact-FINDER is our product search, navigation, and discovery platform — not a CMS. Its effort does not replace CMS work; it is always additive. Any deployment touching search results, category pages, or campaign slots requires Fact-FINDER configuration in addition to the CMS task.</p>
 
     <div class="ff-notice">
       <div class="ff-notice-icon">+</div>
-      <div>Fact-Finder effort is <strong>additive</strong>. When a campaign or category update involves both CMS and Fact-Finder, both effort estimates apply. This is frequently missed in initial planning and is a compounding factor in cross-market rollouts.</div>
+      <div>When a task involves <strong>both a CMS and Fact-FINDER</strong>, the subsidiary review is shared — no double counting. Add <strong>+1 day</strong> to the CMS feedback loop to cover the Fact-FINDER-specific coordination. For <strong>Fact-FINDER-only tasks</strong>, a full <strong>4-day review window</strong> applies independently.</div>
     </div>
 
     <div class="matrix-wrap" style="margin-top:1.25rem">
       <table>
         <thead>
           <tr>
-            <th style="width:22%">Task type</th>
-            <th style="width:36%">What's involved</th>
-            <th class="num" style="width:15%">Effort (base)</th>
-            <th class="num" style="width:15%">Effort (realistic*)</th>
-            <th style="width:12%">Triggers CMS work?</th>
+            <th style="width:20%">Task type</th>
+            <th style="width:30%">What's involved</th>
+            <th class="num" style="width:11%">FF base</th>
+            <th class="num" style="width:13%">Feedback loop</th>
+            <th class="num" style="width:13%">FF realistic</th>
+            <th style="width:13%">Triggers CMS?</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td class="content-type">Campaign / banner slots</td>
-            <td class="what">Setting up or updating promotional content within search results and category pages — priorities, visuals, targeting rules</td>
+            <td class="what">Promotional content within search results and category pages — priorities, visuals, targeting rules</td>
             <td class="num"><span class="ff-base">0.5–1 day</span></td>
-            <td class="num"><span class="ff-real">2–3 days</span></td>
+            <td class="num"><span class="ff-loop-shared loop-badge">+1 day (shared)</span></td>
+            <td class="num"><span class="ff-real">1.5–2 days</span></td>
             <td style="font-size:12px;color:var(--red1);font-weight:500">Usually</td>
           </tr>
           <tr>
             <td class="content-type">Search config &amp; tuning</td>
             <td class="what">Synonym management, boosting rules, filter configuration, relevance adjustments — often market-specific</td>
             <td class="num"><span class="ff-base">1–2 days</span></td>
-            <td class="num"><span class="ff-real">3–5 days</span></td>
+            <td class="num"><span class="ff-loop-own loop-badge">4 days (own)</span></td>
+            <td class="num"><span class="ff-real">5–6 days</span></td>
             <td style="font-size:12px;color:var(--grey2)">Rarely</td>
           </tr>
           <tr>
-            <td class="content-type">Category merchandising</td>
-            <td class="what">Product sorting, pinning, custom rankings, navigation structure changes per category — can be market-specific</td>
+            <td class="content-type">Category navigation</td>
+            <td class="what">Product sorting, pinning, custom rankings, navigation structure per category — can be market-specific</td>
             <td class="num"><span class="ff-base">1–2 days</span></td>
-            <td class="num"><span class="ff-real">3–5 days</span></td>
+            <td class="num"><span class="ff-loop-shared loop-badge">+1 day (shared)</span></td>
+            <td class="num"><span class="ff-real">2–3 days</span></td>
             <td style="font-size:12px;color:var(--red1);font-weight:500">Often</td>
           </tr>
           <tr>
             <td class="content-type">New market setup</td>
-            <td class="what">Full Fact-Finder instance configuration for a new market or language — search index, filters, feed mapping</td>
+            <td class="what">Full Fact-FINDER instance configuration — search index, filters, feed mapping, market-specific rules</td>
             <td class="num"><span class="ff-base">3–5 days</span></td>
-            <td class="num"><span class="ff-real">7–12 days</span></td>
+            <td class="num"><span class="ff-loop-shared loop-badge">+1 day (shared)</span></td>
+            <td class="num"><span class="ff-real">4–6 days</span></td>
             <td style="font-size:12px;color:var(--red1);font-weight:500">Always</td>
           </tr>
           <tr>
             <td class="content-type">Feed &amp; data sync</td>
-            <td class="what">Re-mapping product data or content when upstream changes affect the Fact-Finder feed — highly variable in complexity</td>
+            <td class="what">Re-mapping product data when upstream changes affect the Fact-FINDER feed — highly variable</td>
             <td class="num"><span class="ff-base">0.5–3 days</span></td>
-            <td class="num"><span class="ff-real">2–5 days</span></td>
+            <td class="num"><span class="ff-loop-shared loop-badge">+1–2 days</span></td>
+            <td class="num"><span class="ff-real">1.5–5 days</span></td>
             <td style="font-size:12px;color:var(--grey2)">Sometimes</td>
           </tr>
           <tr class="multi-row">
-            <td colspan="5">× number of markets — same multiplication logic as the CMS matrix applies. Campaign and category tasks are the most frequent and most likely to run in parallel with CMS deployments.</td>
+            <td colspan="6">× 12 markets — same multiplication logic applies. Campaign and category tasks are the most frequent and most likely to run in parallel with CMS deployments, creating combined effort that is rarely planned for explicitly.</td>
           </tr>
         </tbody>
         <tfoot>
-          <tr><td colspan="5">* Realistic = base + subsidiary review, localisation QA, and approval. Feed and data sync issues are excluded and may add significant unplanned effort.</td></tr>
+          <tr><td colspan="6">Shared = review already counted in the CMS feedback loop; +1 day accounts for Fact-FINDER-specific coordination only. Own = Fact-FINDER-only task, full 4-day review applies.</td></tr>
         </tfoot>
       </table>
     </div>
@@ -338,50 +377,50 @@ tfoot td{padding-top:1rem;font-size:11px;color:var(--grey1);font-style:italic;bo
   <div class="section">
     <div class="section-label">Visual comparison</div>
     <div class="section-title">Base vs realistic effort — per market</div>
-    <p class="section-body" style="margin-bottom:1.5rem">Each bar pair shows how much the feedback layer adds to the declared base estimate. Architecture changes omitted for scale clarity.</p>
+    <p class="section-body" style="margin-bottom:1.5rem">Bars are stacked: the lower segment is the CMS editing time (base), the upper segment is the 4-day feedback loop. Because the feedback segment is the same absolute size for both systems, the visual difference between OT and FS is driven entirely by their base editing times — not by a difference in feedback.</p>
     <div class="chart-grid">
       <div class="chart-panel">
-        <div class="panel-title">OpenText — base vs realistic</div>
-        <div class="panel-sub">Days per market, 3 primary content types</div>
+        <div class="panel-title">OpenText — base + feedback layer</div>
+        <div class="panel-sub">Stacked per market — 3 primary content types</div>
         <div class="legend">
-          <span class="leg"><span class="leg-sq" style="background:#d4d4d4;border:1px solid #969696"></span>Base estimate</span>
-          <span class="leg"><span class="leg-sq" style="background:#f7a8b2;border:1px solid #d20a28"></span>Incl. feedback loops</span>
+          <span class="leg"><span class="leg-sq" style="background:#d4d4d4;border:1px solid #969696"></span>Base editing time</span>
+          <span class="leg"><span class="leg-sq" style="background:#f7a8b2;border:1px solid #d20a28"></span>Feedback loop (4 days)</span>
         </div>
-        <div style="position:relative;height:200px"><canvas id="chartOT" role="img" aria-label="OpenText base vs realistic effort per market"></canvas></div>
+        <div style="position:relative;height:200px"><canvas id="chartOT" role="img" aria-label="OpenText stacked base and feedback effort per market"></canvas></div>
       </div>
       <div class="chart-panel">
-        <div class="panel-title">FirstSpirit — base vs realistic</div>
-        <div class="panel-sub">Days per market, 3 primary content types</div>
+        <div class="panel-title">FirstSpirit — base + feedback layer</div>
+        <div class="panel-sub">Stacked per market — 3 primary content types</div>
         <div class="legend">
-          <span class="leg"><span class="leg-sq" style="background:#b0b0b0;border:1px solid #5a5a5a"></span>Base estimate</span>
-          <span class="leg"><span class="leg-sq" style="background:#d4909a;border:1px solid #8c2332"></span>Incl. feedback loops</span>
+          <span class="leg"><span class="leg-sq" style="background:#b0b0b0;border:1px solid #5a5a5a"></span>Base editing time</span>
+          <span class="leg"><span class="leg-sq" style="background:#d4909a;border:1px solid #8c2332"></span>Feedback loop (4 days)</span>
         </div>
-        <div style="position:relative;height:200px"><canvas id="chartFS" role="img" aria-label="FirstSpirit base vs realistic effort per market"></canvas></div>
+        <div style="position:relative;height:200px"><canvas id="chartFS" role="img" aria-label="FirstSpirit stacked base and feedback effort per market"></canvas></div>
       </div>
       <div class="chart-panel full">
-        <div class="panel-title">Industry benchmarks — days per market (replicated content)</div>
-        <div class="panel-sub">Where OpenText and FirstSpirit sit relative to the broader CMS landscape. Base estimates only — feedback loops not included in benchmarks.</div>
+        <div class="panel-title">Industry benchmarks — days per market (base estimates only)</div>
+        <div class="panel-sub">Where OpenText and FirstSpirit sit relative to the broader CMS landscape. Feedback loops not included — benchmarks reflect base editing time only for a fair comparison.</div>
         <div class="legend">
           <span class="leg"><span class="leg-sq" style="background:#e0e0e0;border:1px solid #969696"></span>Modern headless (Contentful / Storyblok)</span>
           <span class="leg"><span class="leg-sq" style="background:#b0b0b0;border:1px solid #5a5a5a"></span>Mid-tier enterprise (AEM / Sitecore)</span>
           <span class="leg"><span class="leg-sq" style="background:#f7a8b2;border:1px solid #d20a28"></span>OpenText (Häfele actual)</span>
           <span class="leg"><span class="leg-sq" style="background:#d4909a;border:1px solid #8c2332"></span>FirstSpirit (Häfele actual)</span>
-          <span class="leg"><span class="leg-sq" style="background:#333;border:1px solid #000"></span>Legacy / complex CMS (reference ceiling)</span>
+          <span class="leg"><span class="leg-sq" style="background:#555;border:1px solid #000"></span>Legacy / complex CMS (reference ceiling)</span>
         </div>
         <div style="position:relative;height:240px"><canvas id="chartBench" role="img" aria-label="Industry benchmark comparison across CMS platforms"></canvas></div>
       </div>
     </div>
   </div>
 
-  <!-- INTERACTIVE -->
+  <!-- PLANNING TOOL -->
   <div class="section">
     <div class="section-label">Planning tool</div>
     <div class="section-title">Market scaling calculator</div>
-    <p class="section-body" style="margin-bottom:1.5rem">Adjust the sliders to model your actual conditions. Results show total effort for a full cross-market rollout — all three primary content types combined.</p>
+    <p class="section-body" style="margin-bottom:1.5rem">Shows total realistic effort across all markets for the three primary content types: <strong>Original pages</strong> (new content), <strong>Replicated pages with updates</strong>, and <strong>Replicated pages without updates</strong>. Capacity is calculated at <strong>2 FTEs</strong>. Architecture changes are excluded due to their high variability.</p>
     <div class="interactive-panel">
       <div class="controls-row">
         <div class="ctrl-group">
-          <label>Number of markets <span id="mkt-display">9</span></label>
+          <label>Number of markets <span id="mkt-display">12</span></label>
           <input type="range" min="1" max="20" value="12" id="mkt-slider" oninput="updateCalc()"/>
         </div>
         <div class="ctrl-group">
@@ -411,7 +450,7 @@ tfoot td{padding-top:1rem;font-size:11px;color:var(--grey1);font-style:italic;bo
     </div>
   </div>
 
-  <!-- INSIGHTS -->
+  <!-- ANALYSIS -->
   <div class="section">
     <div class="section-label">Analysis</div>
     <div class="section-title">What the numbers are telling us</div>
@@ -419,13 +458,13 @@ tfoot td{padding-top:1rem;font-size:11px;color:var(--grey1);font-style:italic;bo
       <div class="insight">
         <div class="ins-tag structural">Structural issue</div>
         <div class="ins-head">Feedback loops are the invisible budget</div>
-        <div class="ins-body">The matrix correctly flags that feedback loops are excluded — but this framing makes them sound like a caveat. Subsidiary review, translation QA, and sign-off rounds are the largest single source of delay in cross-market deployments. At 12 markets, 4 feedback days per task adds 48 days of overhead per content type — before a single IT issue occurs.</div>
+        <div class="ins-body">The 4-day feedback window per market is the largest single controllable variable in our delivery timelines. At 12 markets, that's 48 days of overhead per content type — before any IT issue occurs. This is not captured in base estimates and rarely appears in project plans, but it is the most consistent driver of delivery overrun.</div>
         <div class="ins-bar"><div class="ins-fill" style="width:88%;background:var(--grey2)"></div></div>
       </div>
       <div class="insight">
         <div class="ins-tag risk">Planning risk</div>
         <div class="ins-head">The "× markets" line is where roadmaps fail</div>
-        <div class="ins-body">A replicated page with updates appears manageable at 2–4 days. The moment you multiply by 12 markets with realistic overhead, you're looking at 72–108 days — on a single content type. Campaign launches requiring simultaneous market rollout compound this further, creating coordination pressure that rarely appears in initial estimates.</div>
+        <div class="ins-body">A replicated page with updates appears manageable at 2–4 days. The moment you multiply by 12 markets with the 4-day feedback loop, you're looking at 72–96 days (OT) or 72–84 days (FS) — on a single content type. Campaign launches requiring simultaneous rollout across markets compound this further, creating coordination pressure that is never visible in initial estimates.</div>
         <div class="ins-bar"><div class="ins-fill" style="width:92%;background:var(--red1)"></div></div>
       </div>
       <div class="insight">
@@ -441,9 +480,9 @@ tfoot td{padding-top:1rem;font-size:11px;color:var(--grey1);font-style:italic;bo
         <div class="ins-bar"><div class="ins-fill" style="width:72%;background:var(--red2)"></div></div>
       </div>
       <div class="insight" style="grid-column:1/-1;border-left:3px solid var(--grey2)">
-        <div class="ins-tag structural">Fact-Finder layer</div>
+        <div class="ins-tag structural">Fact-FINDER layer</div>
         <div class="ins-head">Campaigns and category work carry a hidden double effort</div>
-        <div class="ins-body">Every content deployment that touches product discovery — campaigns, category pages, search-driven landing pages — requires Fact-Finder configuration on top of the CMS work. In practice this means a campaign rollout across 12 markets doesn't just multiply the CMS estimate; it multiplies the combined CMS + Fact-Finder estimate. This compound effect is rarely visible in planning documents and is one of the most consistent sources of delivery overrun we experience. It needs to be a line item in any rollout plan that involves search or merchandising.</div>
+        <div class="ins-body">Every content deployment that touches product discovery — campaigns, category pages, search-driven landing pages — requires Fact-FINDER configuration on top of the CMS work. A campaign rollout across 12 markets doesn't just multiply the CMS estimate; it multiplies the combined CMS + Fact-FINDER estimate. The shared feedback loop (4 days + 1 day for FF coordination) applies to both in parallel, but the base configuration work is always additional. This compounding effect is one of the most consistent sources of delivery overrun and needs to be a line item in any rollout plan involving search or product discovery.</div>
         <div class="ins-bar"><div class="ins-fill" style="width:80%;background:var(--grey2)"></div></div>
       </div>
     </div>
@@ -455,28 +494,28 @@ tfoot td{padding-top:1rem;font-size:11px;color:var(--grey1);font-style:italic;bo
     <div class="section-title">Our asks from this analysis</div>
     <div class="recs">
       <div class="rec">
-        <div class="rec-num" style="color:var(--grey2-tint)">01</div>
+        <div class="rec-num">01</div>
         <div>
           <div class="rec-title">Align planning on realistic timelines, not base estimates</div>
-          <div class="rec-body">We need our roadmaps and resourcing conversations to reflect what delivery actually takes — not the best-case matrix figures. A shared 2–3× multiplier for cross-market rollouts should become our internal planning standard, so the team isn't set up to underdeliver against expectations we never had the capacity to meet.</div>
+          <div class="rec-body">We need our roadmaps and resourcing conversations to reflect what delivery actually takes — not the base figures. The realistic column in this document (base + 4-day feedback loop) should become our internal planning standard. This protects the team and sets expectations our 2 FTEs can actually meet.</div>
         </div>
       </div>
       <div class="rec">
-        <div class="rec-num" style="color:var(--grey2-tint)">02</div>
+        <div class="rec-num">02</div>
         <div>
           <div class="rec-title">Bring our subsidiaries closer to the delivery reality</div>
-          <div class="rec-body">The feedback and approval cycles from our markets are the biggest uncontrolled variable in our timelines — and in many cases, the teams on the other side simply aren't aware of the knock-on effect their response times have. We're not asking for rigid rules, but for a shared understanding: helping subsidiary teams see what a delayed review actually costs downstream, so faster turnarounds become a natural priority rather than an imposed one.</div>
+          <div class="rec-body">The 4-day feedback window is our planning baseline, but in practice it is often exceeded — and the teams on the other side are rarely aware of the knock-on effect. We're not asking for rigid rules, but for a shared understanding: helping subsidiary teams see what a delayed review actually costs downstream, so faster turnarounds become a natural priority rather than an imposed one.</div>
         </div>
       </div>
       <div class="rec">
-        <div class="rec-num" style="color:var(--grey2-tint)">03</div>
+        <div class="rec-num">03</div>
         <div>
           <div class="rec-title">Accelerate FirstSpirit adoption for replication-heavy markets</div>
           <div class="rec-body">Our own data shows FirstSpirit is 30–50% faster on replicated content — the task we do most. We want to prioritise migration for the markets where replication volume is highest, so we're capturing those efficiency gains where they compound most. We need resourcing and sign-off to sequence this properly.</div>
         </div>
       </div>
       <div class="rec">
-        <div class="rec-num" style="color:var(--grey2-tint)">04</div>
+        <div class="rec-num">04</div>
         <div>
           <div class="rec-title">Put the platform question on the strategic agenda</div>
           <div class="rec-body">We're operating at 2–3× the replication speed of modern CMS platforms — and that gap is a system constraint, not a team one. We're not raising this as an immediate action, but we believe it needs a dedicated conversation at the right level: what would a future platform look like, what would migration cost, and what would we gain? We'd like to be part of that discussion.</div>
@@ -499,36 +538,49 @@ tfoot td{padding-top:1rem;font-size:11px;color:var(--grey1);font-style:italic;bo
 const TYPES=['Original page','Replicated + updates','Replicated only'];
 const OT_BASE=[4.5,3,2.5];
 const FS_BASE=[3.5,2.5,1.5];
-const OT_REAL=[8.5,7,6];
-const FS_REAL=[7,6,4.5];
+const FEEDBACK=4;
 const GRID='rgba(0,0,0,.06)';
 const TC='#969696';
 const TICK={color:TC,font:{size:11,family:"'DM Sans',sans-serif"}};
 
-function bar(id,labels,datasets,horiz){
+/* ── STACKED CHARTS (OT and FS) ── */
+function stackedBar(id,baseData,baseColor,baseBorder,loopColor,loopBorder){
   return new Chart(document.getElementById(id),{
-    type:'bar',data:{labels,datasets},
+    type:'bar',
+    data:{
+      labels:TYPES,
+      datasets:[
+        {label:'Base editing time',data:baseData,backgroundColor:baseColor,borderColor:baseBorder,borderWidth:1,borderRadius:[0,0,3,3]},
+        {label:'Feedback loop (4 days)',data:[FEEDBACK,FEEDBACK,FEEDBACK],backgroundColor:loopColor,borderColor:loopBorder,borderWidth:1,borderRadius:[3,3,0,0]}
+      ]
+    },
     options:{
-      responsive:true,maintainAspectRatio:false,indexAxis:horiz?'y':'x',
-      plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: ${Number(c.raw).toFixed(1)}d`}}},
+      responsive:true,maintainAspectRatio:false,indexAxis:'y',
+      plugins:{
+        legend:{display:false},
+        tooltip:{callbacks:{
+          label:c=>{
+            if(c.datasetIndex===0) return ` Base: ${c.raw}d`;
+            return ` Feedback: ${c.raw}d`;
+          },
+          footer:items=>{
+            const total=items.reduce((a,i)=>a+i.raw,0);
+            return `Total realistic: ${total}d`;
+          }
+        }}
+      },
       scales:{
-        x:{beginAtZero:true,grid:{color:GRID},ticks:{...TICK,callback:v=>v+'d'}},
-        y:{grid:{display:false},ticks:TICK}
+        x:{stacked:true,beginAtZero:true,max:10,grid:{color:GRID},ticks:{...TICK,callback:v=>v+'d'}},
+        y:{stacked:true,grid:{display:false},ticks:TICK}
       }
     }
   });
 }
 
-bar('chartOT',TYPES,[
-  {label:'Base estimate',data:OT_BASE,backgroundColor:'#d4d4d4',borderColor:'#969696',borderWidth:1,borderRadius:3},
-  {label:'Incl. feedback loops',data:OT_REAL,backgroundColor:'#f7a8b2',borderColor:'#d20a28',borderWidth:1,borderRadius:3}
-],true);
+stackedBar('chartOT',OT_BASE,'#d4d4d4','#969696','#f7a8b2','#d20a28');
+stackedBar('chartFS',FS_BASE,'#b0b0b0','#5a5a5a','#d4909a','#8c2332');
 
-bar('chartFS',TYPES,[
-  {label:'Base estimate',data:FS_BASE,backgroundColor:'#b0b0b0',borderColor:'#5a5a5a',borderWidth:1,borderRadius:3},
-  {label:'Incl. feedback loops',data:FS_REAL,backgroundColor:'#d4909a',borderColor:'#8c2332',borderWidth:1,borderRadius:3}
-],true);
-
+/* ── BENCHMARK CHART ── */
 new Chart(document.getElementById('chartBench'),{
   type:'bar',
   data:{labels:TYPES,datasets:[
@@ -548,27 +600,36 @@ new Chart(document.getElementById('chartBench'),{
   }
 });
 
+/* ── CALCULATOR ── */
 let cc=null;
 function updateCalc(){
   const m=+document.getElementById('mkt-slider').value;
   const l=+document.getElementById('loop-slider').value;
   document.getElementById('mkt-display').textContent=m;
   document.getElementById('loop-display').textContent=l;
+
   const otR=OT_BASE.map(v=>Math.round((v+l)*m));
   const fsR=FS_BASE.map(v=>Math.round((v+l)*m));
   const otT=otR.reduce((a,b)=>a+b,0);
   const fsT=fsR.reduce((a,b)=>a+b,0);
+
   document.getElementById('ot-total').textContent=otT;
-  document.getElementById('ot-months').textContent=Math.ceil(otT/20)+' months at 4-person capacity (approx)';
+  document.getElementById('ot-months').textContent=Math.ceil(otT/10)+' months at 2 FTEs (approx)';
   document.getElementById('fs-total').textContent=fsT;
-  document.getElementById('fs-months').textContent=Math.ceil(fsT/20)+' months at 4-person capacity (approx)';
+  document.getElementById('fs-months').textContent=Math.ceil(fsT/10)+' months at 2 FTEs (approx)';
   document.getElementById('save-days').textContent=otT-fsT;
   document.getElementById('save-note').textContent='days saved switching OT → FS at '+m+' markets';
-  document.getElementById('calc-note').textContent='At '+m+' markets with '+l+' feedback days per task, a single replicated-with-updates request from all markets = '+otR[1]+' days (OT) or '+fsR[1]+' days (FS). Sequential estimates — simultaneous requests require parallel resourcing or staggered rollout planning.';
-  const d={labels:TYPES,datasets:[
-    {label:'OT realistic ×'+m,data:otR,backgroundColor:'#f7a8b2',borderColor:'#d20a28',borderWidth:1,borderRadius:3},
-    {label:'FS realistic ×'+m,data:fsR,backgroundColor:'#d4909a',borderColor:'#8c2332',borderWidth:1,borderRadius:3}
-  ]};
+  document.getElementById('calc-note').textContent=
+    'At '+m+' markets with '+l+' feedback days per task — Replicated pages with updates: OT '+otR[1]+'d total, FS '+fsR[1]+'d total. '+
+    'These are sequential estimates. Simultaneous market requests require parallel resourcing or staggered rollout planning.';
+
+  const d={
+    labels:TYPES,
+    datasets:[
+      {label:'OT realistic ×'+m,data:otR,backgroundColor:'#f7a8b2',borderColor:'#d20a28',borderWidth:1,borderRadius:3},
+      {label:'FS realistic ×'+m,data:fsR,backgroundColor:'#d4909a',borderColor:'#8c2332',borderWidth:1,borderRadius:3}
+    ]
+  };
   if(cc){cc.data=d;cc.update();return;}
   cc=new Chart(document.getElementById('chartCalc'),{
     type:'bar',data:d,
