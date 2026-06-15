@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Operations Dashboard · Häfele 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red:       #C8102E;
+  --red-dark:  #a00e25;
+  --red-dim:   rgba(200,16,46,0.12);
+  --complete:  #4dbb8a;
+  --inprogress:#e8943a;
+  --notstarted:#7a7f8e;
+  --review:    #C8102E;
+  --onhold:    #9b7cff;
+}
+[data-theme="dark"] {
+  --bg:           #111214;
+  --surface:      #18191d;
+  --surface2:     #1f2126;
+  --surface3:     #272930;
+  --border:       #2c2f36;
+  --border-light: #383c46;
+  --text:         #f0f1f4;
+  --text-muted:   #7a7f8e;
+  --text-dim:     #3a3e4a;
+  --header-bg:    #18191d;
+}
+[data-theme="light"] {
+  --bg:           #f0ebe4;
+  --surface:      #faf7f3;
+  --surface2:     #ece6df;
+  --surface3:     #e2dbd2;
+  --border:       #d3ccc4;
+  --border-light: #bcb5ac;
+  --text:         #1e1b18;
+  --text-muted:   #7a6f66;
+  --text-dim:     #b5aca3;
+  --header-bg:    #faf7f3;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { background:var(--bg); color:var(--text); font-family:'Barlow',sans-serif; font-weight:300; min-height:100vh; transition:background .25s,color .25s; }
+
+/* HEADER */
+.header { background:var(--header-bg); border-bottom:1px solid var(--border); padding:0 40px; display:flex; align-items:center; justify-content:space-between; height:60px; position:sticky; top:0; z-index:200; }
+.header-left { display:flex; align-items:center; gap:16px; }
+.logo-box { background:var(--red); width:36px; height:36px; border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0; overflow:hidden; }
+.logo-box svg { width:20px; height:20px; }
+.brand { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:19px; letter-spacing:.06em; text-transform:uppercase; color:var(--text); }
+.hdivider { width:1px; height:24px; background:var(--border-light); margin:0 4px; }
+.htitle { font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:13px; letter-spacing:.05em; text-transform:uppercase; color:var(--text-muted); }
+.header-right { display:flex; align-items:center; gap:8px; }
+.period-badge { background:var(--surface2); border:1px solid var(--border); border-radius:4px; padding:4px 12px; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:.08em; color:var(--text-muted); text-transform:uppercase; }
+.hbtn { background:var(--surface2); border:1px solid var(--border); border-radius:4px; padding:6px 12px; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:11px; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; color:var(--text-muted); transition:all .15s; }
+.hbtn:hover { border-color:var(--border-light); color:var(--text); }
+.export-btn { background:var(--red); color:#fff; border:none; border-radius:4px; padding:7px 16px; font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; transition:background .15s; }
+.export-btn:hover { background:var(--red-dark); }
+
+.red-line { height:3px; background:var(--red); }
+
+/* FILTER BAR */
+.filters-bar { background:var(--header-bg); border-bottom:1px solid var(--border); padding:10px 40px; display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+.fg { display:flex; align-items:center; gap:5px; flex-wrap:wrap; }
+.flabel { font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:10px; letter-spacing:.1em; color:var(--text-muted); text-transform:uppercase; padding-right:2px; white-space:nowrap; }
+.chip { background:transparent; border:1px solid var(--border); border-radius:3px; padding:4px 10px; font-family:'Barlow',sans-serif; font-weight:500; font-size:12px; color:var(--text-muted); cursor:pointer; transition:all .15s; white-space:nowrap; }
+.chip:hover { border-color:var(--red); color:var(--text); }
+.chip.active { background:var(--red); border-color:var(--red); color:#fff; }
+.fsep { width:1px; height:18px; background:var(--border); margin:0 6px; flex-shrink:0; }
+
+/* DROPDOWN */
+.ddwrap { position:relative; }
+.ddbtn { background:transparent; border:1px solid var(--border); border-radius:3px; padding:4px 10px; font-family:'Barlow',sans-serif; font-weight:500; font-size:12px; color:var(--text-muted); cursor:pointer; transition:all .15s; display:flex; align-items:center; gap:5px; white-space:nowrap; }
+.ddbtn:hover,.ddbtn.open { border-color:var(--red); color:var(--text); }
+.ddbtn.sel { background:var(--red); border-color:var(--red); color:#fff; }
+.ddarrow { font-size:9px; transition:transform .15s; }
+.ddbtn.open .ddarrow { transform:rotate(180deg); }
+.ddmenu { display:none; position:absolute; top:calc(100% + 6px); left:0; background:var(--surface); border:1px solid var(--border-light); border-radius:5px; padding:6px; z-index:300; min-width:170px; box-shadow:0 8px 24px rgba(0,0,0,.35); max-height:280px; overflow-y:auto; }
+.ddmenu.open { display:block; }
+.dditem { padding:6px 10px; font-size:12px; color:var(--text-muted); border-radius:3px; cursor:pointer; transition:all .12s; display:flex; align-items:center; gap:7px; }
+.dditem:hover { background:var(--surface2); color:var(--text); }
+.dditem.active { color:var(--red); }
+.dditem.active::before { content:'✓'; font-size:10px; }
+.dditem:not(.active)::before { content:''; display:inline-block; width:12px; }
+
+/* MAIN */
+.main { padding:26px 40px; max-width:1700px; margin:0 auto; }
+.slabel { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:10px; letter-spacing:.14em; text-transform:uppercase; color:var(--red); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
+.slabel::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* KPI */
+.kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:26px; }
+.kpi { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:18px 20px; position:relative; transition:border-color .2s; }
+.kpi:hover { border-color:var(--border-light); }
+.kpi::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; border-radius:0 0 6px 6px; }
+.kpi.c::after { background:var(--complete); }
+.kpi.i::after { background:var(--inprogress); }
+.kpi.n::after { background:var(--notstarted); }
+.kpi.r::after { background:var(--review); }
+.kpi-lbl { font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--text-muted); margin-bottom:8px; }
+.kpi-val { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:48px; line-height:1; letter-spacing:-.02em; color:var(--text); }
+.kpi-bot { display:flex; align-items:baseline; justify-content:space-between; margin-top:6px; }
+.kpi-sub { font-size:11px; color:var(--text-muted); }
+.kpi-pct { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:15px; }
+.kpi.c .kpi-pct { color:var(--complete); }
+.kpi.i .kpi-pct { color:var(--inprogress); }
+.kpi.n .kpi-pct { color:var(--notstarted); }
+.kpi.r .kpi-pct { color:var(--review); }
+
+/* QUARTERLY */
+.q-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:26px; }
+.qcard { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:18px 20px; }
+.qh { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:4px; }
+.qlbl { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:26px; letter-spacing:-.01em; }
+.qpct { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:18px; }
+.qper { font-size:11px; color:var(--text-muted); margin-bottom:12px; }
+.qbar-bg { background:var(--surface3); border-radius:2px; height:4px; overflow:hidden; margin-bottom:10px; }
+.qbar-fill { height:100%; border-radius:2px; transition:width 1s cubic-bezier(.16,1,.3,1); }
+.qstats { display:flex; gap:14px; }
+.qstat { font-size:11px; color:var(--text-muted); }
+.qstat span { color:var(--text); font-weight:500; }
+.q1 .qlbl,.q1 .qpct { color:var(--complete); } .q1 .qbar-fill { background:var(--complete); }
+.q2 .qlbl,.q2 .qpct { color:var(--inprogress); } .q2 .qbar-fill { background:var(--inprogress); }
+.q3 .qlbl,.q3 .qpct { color:var(--red); } .q3 .qbar-fill { background:var(--red); }
+.q4 .qlbl,.q4 .qpct { color:var(--text-dim); } .q4 .qbar-fill { background:var(--text-dim); }
+
+/* GRID / CARD */
+.g2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px; }
+.g3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:12px; }
+.card { background:var(--surface); border:1px solid var(--border); border-radius:6px; padding:20px 22px; }
+.ctitle { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; }
+.cbadge { font-family:'Barlow',sans-serif; font-weight:400; font-size:11px; background:var(--surface2); border:1px solid var(--border); border-radius:3px; padding:2px 8px; color:var(--text-muted); text-transform:none; letter-spacing:0; }
+
+/* BAR CHART */
+.bar-chart { display:flex; flex-direction:column; gap:10px; }
+.brow { display:flex; align-items:center; gap:10px; }
+.bname { font-size:12px; color:var(--text-muted); width:130px; flex-shrink:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.btrack { flex:1; background:var(--surface3); border-radius:2px; height:6px; overflow:hidden; }
+.bfill { height:100%; border-radius:2px; transition:width 1s cubic-bezier(.16,1,.3,1); }
+.bval { font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:13px; width:22px; text-align:right; color:var(--text); }
+.btotal { display:flex; align-items:center; gap:10px; border-top:1px solid var(--border); padding-top:10px; margin-top:4px; }
+.btotal-lbl { font-size:12px; color:var(--text-muted); width:130px; flex-shrink:0; font-weight:600; }
+.btotal-val { font-family:'Barlow Condensed',sans-serif; font-weight:800; font-size:16px; color:var(--red); margin-left:auto; padding-right:0; width:22px; text-align:right; }
+
+/* DONUT */
+.donut-wrap { display:flex; align-items:center; gap:18px; }
+.dlegend { flex:1; display:flex; flex-direction:column; gap:8px; }
+.drow { display:flex; align-items:center; gap:8px; }
+.ddot { width:8px; height:8px; border-radius:2px; flex-shrink:0; }
+.dname { font-size:12px; color:var(--text-muted); flex:1; }
+.dval { font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:14px; color:var(--text); }
+
+/* TABLE */
+.task-table { width:100%; border-collapse:collapse; }
+.task-table th { font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:10px; letter-spacing:.1em; text-transform:uppercase; color:var(--text-muted); text-align:left; padding:0 14px 10px; border-bottom:1px solid var(--border); white-space:nowrap; }
+.task-table td { padding:10px 14px; font-size:12px; border-bottom:1px solid var(--border); vertical-align:middle; color:var(--text); }
+.task-table tr:last-child td { border-bottom:none; }
+.task-table tbody tr:hover td { background:var(--surface2); }
+.ttitle { max-width:260px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.ttitle-wrap { position:relative; display:inline-block; max-width:260px; }
+.ttitle-wrap:hover .ttip { display:block; }
+.ttip {
+  display:none;
+  position:absolute;
+  top:calc(100% + 6px);
+  left:0;
+  z-index:400;
+  background:var(--surface);
+  border:1px solid var(--border-light);
+  border-radius:5px;
+  padding:8px 12px;
+  font-size:12px;
+  color:var(--text);
+  white-space:normal;
+  width:320px;
+  box-shadow:0 8px 24px rgba(0,0,0,.3);
+  line-height:1.5;
+  pointer-events:none;
+}
+.spill { display:inline-flex; align-items:center; gap:4px; padding:3px 8px; border-radius:3px; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:10px; letter-spacing:.05em; text-transform:uppercase; white-space:nowrap; }
+.spill::before { content:''; width:5px; height:5px; border-radius:50%; background:currentColor; flex-shrink:0; }
+.sc  { background:rgba(77,187,138,.1);  color:var(--complete); }
+.si  { background:rgba(232,148,58,.1);  color:var(--inprogress); }
+.sn  { background:rgba(122,127,142,.1); color:var(--notstarted); }
+.sr  { background:var(--red-dim);        color:var(--red); }
+.so  { background:rgba(155,124,255,.1);  color:var(--onhold); }
+.pwrap { display:flex; align-items:center; gap:5px; }
+.pdot { width:5px; height:5px; border-radius:50%; flex-shrink:0; }
+.pcrit { background:var(--red); } .phigh { background:var(--inprogress); } .pmed { background:#5b7cfa; } .plow { background:var(--complete); }
+.ptxt { font-size:12px; color:var(--text-muted); }
+.ctag { display:inline-block; background:var(--surface3); border:1px solid var(--border); border-radius:3px; padding:1px 5px; font-size:10px; color:var(--text-muted); margin:1px; white-space:nowrap; }
+.ttag { display:inline-block; font-size:10px; background:var(--red-dim); color:var(--red); border-radius:3px; padding:1px 5px; margin:1px; white-space:nowrap; }
+.obadge { font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:10px; letter-spacing:.06em; text-transform:uppercase; background:var(--surface3); border:1px solid var(--border); border-radius:3px; padding:2px 6px; color:var(--text-muted); }
+
+/* SORTABLE HEADERS */
+.sortable { cursor:pointer; user-select:none; white-space:nowrap; }
+.sortable:hover { color:var(--text); }
+.sort-icon { font-size:9px; color:var(--text-dim); margin-left:3px; display:inline-block; width:10px; }
+.sortable.asc  .sort-icon::after { content:'▲'; color:var(--red); }
+.sortable.desc .sort-icon::after { content:'▼'; color:var(--red); }
+.sortable:not(.asc):not(.desc) .sort-icon::after { content:'⇅'; color:var(--text-dim); }
+.footer { border-top:1px solid var(--border); padding:14px 40px; display:flex; justify-content:space-between; align-items:center; font-size:11px; color:var(--text-dim); margin-top:16px; }
+.footer strong { color:var(--text-muted); font-weight:500; }
+
+/* ANIMATIONS */
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);} }
+.kpi{animation:fadeUp .4s cubic-bezier(.16,1,.3,1) both;}
+.kpi:nth-child(1){animation-delay:.04s}.kpi:nth-child(2){animation-delay:.08s}.kpi:nth-child(3){animation-delay:.12s}.kpi:nth-child(4){animation-delay:.16s}
+.qcard{animation:fadeUp .4s cubic-bezier(.16,1,.3,1) both;}
+.qcard:nth-child(1){animation-delay:.1s}.qcard:nth-child(2){animation-delay:.13s}.qcard:nth-child(3){animation-delay:.16s}.qcard:nth-child(4){animation-delay:.19s}
+
+@media(max-width:1100px){
+  .header,.filters-bar,.main,.footer{padding-left:16px;padding-right:16px;}
+  .kpi-row,.q-grid{grid-template-columns:repeat(2,1fr);}
+  .g2,.g3{grid-template-columns:1fr;}
+}
+@media print{.filters-bar,.export-btn,.hbtn{display:none;}.card,.kpi,.qcard{break-inside:avoid;}}
+</style>
+</head>
+<body>
+
+<div class="red-line"></div>
+
+<header class="header">
+  <div class="header-left">
+    <div class="logo-box" style="overflow:hidden;">
+      <svg viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" width="34" height="34">
+        <text x="17" y="29" text-anchor="middle" dominant-baseline="auto" font-family="Barlow Condensed, sans-serif" font-weight="800" font-size="30" fill="white">Ä</text>
+      </svg>
+    </div>
+    <span class="brand">Häfele</span>
+    <div class="hdivider"></div>
+    <span class="htitle">Website Operations Dashboard</span>
+  </div>
+  <div class="header-right">
+    <div class="period-badge">Jan – 12 Jun 2026</div>
+    <button class="hbtn" id="theme-btn" onclick="toggleTheme()">☾ Dark</button>
+    <button class="export-btn" onclick="window.print()">↓ Export PDF</button>
+  </div>
+</header>
+
+<div class="filters-bar" id="fbar">
+
+  <div class="fg">
+    <span class="flabel">View</span>
+    <span class="chip active" onclick="setView('all',this)">All</span>
+    <span class="chip" onclick="setView('monthly',this)">Monthly</span>
+    <span class="chip" onclick="setView('quarterly',this)">Quarterly</span>
+  </div>
+  <div class="fsep"></div>
+
+  <div class="fg">
+    <span class="flabel">Status</span>
+    <span class="chip active" onclick="setF('status','all',this)">All</span>
+    <span class="chip" onclick="setF('status','Complete',this)">Complete</span>
+    <span class="chip" onclick="setF('status','In Progress',this)">In Progress</span>
+    <span class="chip" onclick="setF('status','Not Started',this)">Not Started</span>
+    <span class="chip" onclick="setF('status','Under Review',this)">Under Review</span>
+  </div>
+  <div class="fsep"></div>
+
+  <div class="fg">
+    <span class="flabel">Priority</span>
+    <span class="chip" onclick="setF('priority','Critical',this)">Critical</span>
+    <span class="chip" onclick="setF('priority','High',this)">High</span>
+    <span class="chip" onclick="setF('priority','Medium',this)">Medium</span>
+    <span class="chip" onclick="setF('priority','Low',this)">Low</span>
+  </div>
+  <div class="fsep"></div>
+
+  <div class="fg">
+    <span class="flabel">Subsidiary</span>
+    <div class="ddwrap" id="ddwrap">
+      <button class="ddbtn" id="ddbtn" onclick="toggleDD()">
+        <span id="ddlabel">All</span>
+        <span class="ddarrow">▼</span>
+      </button>
+      <div class="ddmenu" id="ddmenu"></div>
+    </div>
+  </div>
+
+  <div class="fg" id="qfg" style="display:none;">
+    <div class="fsep"></div>
+    <span class="flabel">Quarter</span>
+    <span class="chip active" onclick="setF('quarter','all',this)">All</span>
+    <span class="chip" onclick="setF('quarter','Q1',this)">Q1</span>
+    <span class="chip" onclick="setF('quarter','Q2',this)">Q2</span>
+    <span class="chip" onclick="setF('quarter','Q3',this)">Q3</span>
+    <span class="chip" onclick="setF('quarter','Q4',this)">Q4</span>
+  </div>
+
+  <div class="fg" id="mfg" style="display:none;">
+    <div class="fsep"></div>
+    <span class="flabel">Month</span>
+    <span class="chip active" onclick="setF('month','all',this)">All</span>
+    <span class="chip" onclick="setF('month','Jan',this)">Jan</span>
+    <span class="chip" onclick="setF('month','Feb',this)">Feb</span>
+    <span class="chip" onclick="setF('month','Mar',this)">Mar</span>
+    <span class="chip" onclick="setF('month','Apr',this)">Apr</span>
+    <span class="chip" onclick="setF('month','May',this)">May</span>
+    <span class="chip" onclick="setF('month','Jun',this)">Jun</span>
+  </div>
+
+</div>
+
+<main class="main">
+
+  <div class="slabel">Task Status Overview</div>
+  <div class="kpi-row">
+    <div class="kpi c"><div class="kpi-lbl">Complete</div><div class="kpi-val" id="kv-c">—</div><div class="kpi-bot"><div class="kpi-sub">tasks done</div><div class="kpi-pct" id="kp-c">—%</div></div></div>
+    <div class="kpi i"><div class="kpi-lbl">In Progress</div><div class="kpi-val" id="kv-i">—</div><div class="kpi-bot"><div class="kpi-sub">actively running</div><div class="kpi-pct" id="kp-i">—%</div></div></div>
+    <div class="kpi n"><div class="kpi-lbl">Not Started</div><div class="kpi-val" id="kv-n">—</div><div class="kpi-bot"><div class="kpi-sub">queued</div><div class="kpi-pct" id="kp-n">—%</div></div></div>
+    <div class="kpi r"><div class="kpi-lbl">Under Review</div><div class="kpi-val" id="kv-r">—</div><div class="kpi-bot"><div class="kpi-sub">awaiting sign-off</div><div class="kpi-pct" id="kp-r">—%</div></div></div>
+  </div>
+
+  <div class="slabel">Yearly Objectives · 2025</div>
+  <div class="q-grid" id="qgrid"></div>
+
+  <div class="slabel">Activity Breakdown</div>
+  <div class="g2">
+    <div class="card"><div class="ctitle">Tasks by Subsidiary <span class="cbadge" id="cb-sub">—</span></div><div class="bar-chart" id="sub-bars"></div></div>
+    <div class="card"><div class="ctitle">Activity Types <span class="cbadge" id="cb-type">—</span></div><div class="bar-chart" id="type-bars"></div></div>
+  </div>
+
+  <div class="g3">
+    <div class="card"><div class="ctitle">Priority Breakdown</div><div class="donut-wrap"><svg width="96" height="96" viewBox="0 0 96 96" id="d-prio"></svg><div class="dlegend" id="l-prio"></div></div></div>
+    <div class="card"><div class="ctitle">Task Origin</div><div class="donut-wrap"><svg width="96" height="96" viewBox="0 0 96 96" id="d-orig"></svg><div class="dlegend" id="l-orig"></div></div></div>
+    <div class="card"><div class="ctitle">Status Split</div><div class="donut-wrap"><svg width="96" height="96" viewBox="0 0 96 96" id="d-stat"></svg><div class="dlegend" id="l-stat"></div></div></div>
+  </div>
+
+  <div class="slabel" style="margin-top:6px;">Task Register</div>
+  <div class="card" style="padding:20px 0 0;">
+    <div style="padding:0 22px 14px;display:flex;align-items:center;justify-content:space-between;">
+      <div class="ctitle" style="margin-bottom:0;">All Tasks</div>
+      <span class="cbadge" id="tcount">—</span>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="task-table">
+        <thead><tr>
+          <th style="padding-left:22px;" onclick="sortTable('t')" class="sortable">Title <span class="sort-icon" id="si-t"></span></th>
+          <th onclick="sortTable('s')" class="sortable">Status <span class="sort-icon" id="si-s"></span></th>
+          <th onclick="sortTable('p')" class="sortable">Priority <span class="sort-icon" id="si-p"></span></th>
+          <th>Type</th>
+          <th onclick="sortTable('c')" class="sortable">Subsidiary <span class="sort-icon" id="si-c"></span></th>
+          <th onclick="sortTable('o')" class="sortable">Origin <span class="sort-icon" id="si-o"></span></th>
+          <th onclick="sortTable('q')" class="sortable">Quarter <span class="sort-icon" id="si-q"></span></th>
+          <th onclick="sortTable('d')" class="sortable">Due <span class="sort-icon" id="si-d"></span></th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div>Häfele · Digital Team · <strong>Website Operations Dashboard 2026</strong> · Notion Export</div>
+  <div>Data period: 1 Jan – 12 Jun 2026</div>
+</footer>
+
+<script>
+// ── DATA ──
+const RAW = [
+  {o:"Subsidiaries",t:"Products Subcategory Page Creation | Cerniere",s:"Complete",p:"Medium",tp:"Content, SEO, UX/UI",c:"Italy",d:"Jan 23"},
+  {o:"Subsidiaries",t:"Products Subcategory Page Creation | Sistemi di chiusura, serrature e cricchetti",s:"Complete",p:"Medium",tp:"Content, SEO, UX/UI",c:"Italy",d:"Jan 29"},
+  {o:"Competence",t:"Discover the logic of metadata",s:"Complete",p:"Critical",tp:"SEO",c:"RWE",d:"Jan 31"},
+  {o:"Subsidiaries",t:"Products Subcategory Page Creation | Chiudiporta",s:"Complete",p:"Medium",tp:"Content, SEO, UX/UI",c:"Italy",d:"Jan 31"},
+  {o:"Subsidiaries",t:"About Haefele Section Improvement | Own House Assortments",s:"Complete",p:"Critical",tp:"Content, UX/UI",c:"Ireland",d:"Feb 24"},
+  {o:"Roadmap",t:"Q1-Q4 Quarterly consultation meetings for structured planning for OW/content/data activities",s:"Complete",p:"Critical",tp:"Content, SEO, UX/UI",c:"RWE",d:"Dec 31"},
+  {o:"Subsidiaries",t:"FACT-Finder Guide Creation | Lighting - Application Based",s:"Complete",p:"Medium",tp:"Content",c:"Canada",d:"May 8"},
+  {o:"Subsidiaries",t:"Products Subcategory Page Improvement and Replication | Slido F-18 Page & Own Assortments for Slido",s:"Complete",p:"Medium",tp:"Content, SEO",c:"Canada",d:"Mar 4"},
+  {o:"Roadmap",t:"Q1 Keyword Research (all subsidiaries)",s:"Complete",p:"Critical",tp:"Content, SEO",c:"RWE",d:"Mar 6"},
+  {o:"Roadmap",t:"Q1 Content Dashboard - Establish Core KPIs and Main Funnel Stages",s:"Complete",p:"Critical",tp:"Content",c:"RWE",d:"Mar 6"},
+  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Lighting + OHA (see details)",s:"Complete",p:"Critical",tp:"Content, SEO",c:"Belgium, Canada, France, RWE, Spain, United Kingdom",d:"Mar 6"},
+  {o:"Roadmap",t:"Q1 Create a content sharing process for the region.",s:"Complete",p:"Critical",tp:"Content, SEO",c:"RWE",d:"Mar 31"},
+  {o:"Roadmap",t:"Q1 Create content sharing process that can be replicated regionally",s:"Complete",p:"Critical",tp:"Content",c:"RWE",d:"Mar 31"},
+  {o:"Roadmap",t:"Q1 Subsidiary specific content training that focus' on SEO (open for detail)",s:"Complete",p:"Critical",tp:"SEO",c:"RWE",d:"Mar 31"},
+  {o:"Subsidiaries",t:"Homepage Page Improvement | Teaser + module",s:"Complete",p:"Medium",tp:"Content, SEO",c:"Switzerland",d:"Mar 31"},
+  {o:"Subsidiaries",t:"Products Subcategory Page Creation | Viti",s:"Complete",p:"Medium",tp:"Content, SEO",c:"Italy",d:"Mar 31"},
+  {o:"Subsidiaries",t:"Products Subcategory Page Creation | Utensili e accessori",s:"Complete",p:"Medium",tp:"Content, SEO",c:"Italy",d:"Mar 31"},
+  {o:"Subsidiaries",t:"Products Subcategory Page Creation | Abbigliamento da lavoro e materiale anti-infortunistico",s:"Complete",p:"Medium",tp:"Content, SEO",c:"Italy",d:"Mar 31"},
+  {o:"Subsidiaries",t:"Products Subcategory Page Creation | Sigillanti e adesivi",s:"Complete",p:"Medium",tp:"Content, SEO",c:"Italy",d:"Mar 31"},
+  {o:"Subsidiaries",t:"Products Subcategory Page Improvement and Replication | Slido D-Line11",s:"Complete",p:"Medium",tp:"Content, SEO",c:"Italy",d:"Mar 31"},
+  {o:"Subsidiaries",t:"Products Subcategory Page Creation | Tavoli, gambe per tavoli, piedini per mobili, ruote",s:"Complete",p:"Medium",tp:"Content, SEO",c:"Italy",d:"Mar 31"},
+  {o:"Subsidiaries",t:"Products Subcategory Page Creation | Prodotti per la manutenzione",s:"Complete",p:"Medium",tp:"Content, SEO",c:"Italy",d:"Mar 31"},
+  {o:"Competence",t:"Scheduled Banners and Other Elements",s:"Complete",p:"Medium",tp:"Feature Request",c:"RWE, United Kingdom",d:"Mar 31"},
+  {o:"Subsidiaries",t:"Homepage Section Deletion | Idées pour la maison",s:"Complete",p:"Medium",tp:"Content, SEO",c:"France",d:"Apr 3"},
+  {o:"HWW",t:"Review and feedback on GEO document (open to see doc)",s:"Complete",p:"Low",tp:"General Feedback, SEO",c:"RWE",d:"Apr 7"},
+  {o:"Subsidiaries",t:"Products Subcategory Page Improvement and Replication | Drawer Runners",s:"Complete",p:"Medium",tp:"Content, SEO",c:"Denmark",d:"Apr 16"},
+  {o:"Subsidiaries",t:"Google Ads Strategy and Recommendations | HBB Factory Relaunch",s:"Complete",p:"Critical",tp:"Performance",c:"Italy, RWE",d:"Apr 17"},
+  {o:"Subsidiaries",t:"Products Subcategory Page Creation | Materiale di fissaggio",s:"Complete",p:"Medium",tp:"Content, SEO",c:"Italy",d:"Apr 17"},
+  {o:"Subsidiaries",t:"Products Subcategory Page Replication | Free Slim",s:"Complete",p:"Medium",tp:"Content, SEO",c:"Ireland",d:"Apr 17"},
+  {o:"Subsidiaries",t:"About Haefele Section Replication and Translation | Own House Assortments",s:"Complete",p:"Medium",tp:"Content, SEO",c:"Portugal",d:"Apr 17"},
+  {o:"Subsidiaries",t:"Suggestions for Checkout and Add to Cart pages",s:"Complete",p:"Medium",tp:"Content, Feature Request, UX/UI",c:"Canada",d:"Apr 17"},
+  {o:"Subsidiaries",t:"Feature Request | Bulk products for Lighting Pages",s:"Under Review",p:"Low",tp:"Content, Feature Request",c:"France",d:"Jun 30"},
+  {o:"HWW",t:"Review and feedback on HWW Guideline Homepage Structure",s:"Complete",p:"Medium",tp:"Content, General Feedback, SEO",c:"RWE",d:"Apr 21"},
+  {o:"Subsidiaries",t:"Troubleshooting | Brochures backend disappearance (ticket HIS-394330)",s:"Complete",p:"Critical",tp:"Troubleshooting",c:"Canada, France, RWE",d:"Apr 24"},
+  {o:"Competence",t:"Feedback about Homepage Structure and Guidelines HWW",s:"Complete",p:"Critical",tp:"Content, General Feedback, SEO",c:"RWE",d:"Apr 24"},
+  {o:"Subsidiaries",t:"About Haefele Page Replication | Own House Assortments Lighting",s:"Complete",p:"Medium",tp:"Content, SEO",c:"Belgium",d:"Apr 27"},
+  {o:"Competence",t:"Guidelines OT Page Setup Metadata",s:"Complete",p:"Critical",tp:"Performance, SEO",c:"RWE",d:"Apr 29"},
+  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Handles and Knobs",s:"In Progress",p:"Critical",tp:"Content, SEO, UX/UI",c:"Austria, Belgium, Canada, Denmark, France, Ireland, Italy, Spain, Switzerland",d:"Jun 30"},
+  {o:"Subsidiaries",t:"FACT-Finder Campaign Support | Essentials",s:"Complete",p:"Medium",tp:"Troubleshooting",c:"United Kingdom",d:"Apr 30"},
+  {o:"Subsidiaries",t:"FACT-Finder Guide Replication | Lighting Guide HIT > HDK",s:"Complete",p:"Medium",tp:"Content, Feature Request",c:"Denmark",d:"Apr 30"},
+  {o:"Subsidiaries",t:"FACT-Finder campaign Support and Improvement | Metalla and Matrix",s:"Complete",p:"Medium",tp:"Content, Troubleshooting",c:"Canada",d:"May 5"},
+  {o:"Subsidiaries",t:"Products Subcategory Page Improvement | Drawer Inserts modules",s:"Complete",p:"Medium",tp:"Content",c:"Denmark",d:"May 8"},
+  {o:"Subsidiaries",t:"FACT-Finder campaign support | Connect Mesh campaign troubleshooting",s:"Complete",p:"Medium",tp:"Troubleshooting",c:"Denmark",d:"May 15"},
+  {o:"Competence",t:"HPT domain redirection support",s:"In Progress",p:"Critical",tp:"SEO, Troubleshooting",c:"Portugal",d:"Jun 30"},
+  {o:"Subsidiaries",t:"Troubleshooting | SEO tools whitelisting (incl. agencies IPs for crawling)",s:"Complete",p:"Medium",tp:"SEO, Troubleshooting",c:"RWE",d:"Jun 30"},
+  {o:"Roadmap",t:"Q2 Subsidiary specific content training that focus' on SEO - Schedule Training Sessions",s:"Complete",p:"Critical",tp:"SEO",c:"RWE",d:"Jun 30"},
+  {o:"Competence",t:"Inspiration Section Improvement | https://www.haefele.at/de/info/objekt-hotel/360-objekt-kompetenz/30420/",s:"In Progress",p:"Critical",tp:"Content, SEO",c:"RWE",d:"Jun 30"},
+  {o:"Roadmap",t:"Q2 Online content to be published for all core categories for every subsidiary",s:"In Progress",p:"Critical",tp:"Content, SEO",c:"RWE",d:"Jun 30"},
+  {o:"Roadmap",t:"Q2 Create approval/review process to prevent rouge non optimized content.",s:"Complete",p:"Critical",tp:"Content, SEO",c:"RWE",d:"Jun 30"},
+  {o:"Roadmap",t:"Q2 Continue to define best practice and use data to lead developments through for OW",s:"Not Started",p:"Critical",tp:"Content, SEO, UX/UI",c:"RWE",d:"Jun 30"},
+  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Tools & Consumables",s:"Not Started",p:"Medium",tp:"Content, SEO",c:"RWE",d:"Jun 30"},
+  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Sliding, Folding & Tambour Door Fittings",s:"Not Started",p:"Medium",tp:"Content, SEO",c:"RWE",d:"Jun 30"},
+  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Furniture & Living Solution",s:"In Progress",p:"Medium",tp:"Content, SEO",c:"Austria, RWE",d:"Jun 30"},
+  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Architectural Ironmongery",s:"Not Started",p:"Medium",tp:"Content, SEO",c:"RWE",d:"Jun 30"},
+  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Kitchen Organization",s:"In Progress",p:"Medium",tp:"Content, SEO",c:"Netherlands, RWE",d:"Jun 30"},
+  {o:"Subsidiaries",t:"About Haefele Page Replication | Own House Assortments Slido",s:"Under Review",p:"Medium",tp:"Content, SEO",c:"RWE, United Kingdom",d:"Jul 30"},
+  {o:"Subsidiaries",t:"Products Subcategory Page Improvement | Slido",s:"Under Review",p:"Medium",tp:"Content, SEO",c:"RWE, United Kingdom",d:"Jul 30"},
+  {o:"Roadmap",t:"Q3 Define customer personas for online customers",s:"Not Started",p:"Critical",tp:"Content, SEO",c:"RWE",d:"Sep 30"},
+  {o:"Roadmap",t:"Q3 Industry specific content created for dedicated sections onsite",s:"Not Started",p:"Critical",tp:"Content, SEO",c:"RWE",d:"Sep 30"},
+  {o:"Roadmap",t:"Q3 Populate Metadata",s:"Not Started",p:"Critical",tp:"SEO",c:"RWE",d:"Sep 30"},
+  {o:"HWW",t:"Content Mapping for FirstSpirit Migration",s:"Not Started",p:"Medium",tp:"Content, SEO, Troubleshooting",c:"RWE",d:"Sep 30"},
+  {o:"Competence",t:"Blog & Editorial Plan for Evergreen Content",s:"Not Started",p:"Medium",tp:"Content, SEO",c:"RWE",d:"Sep 30"},
+  {o:"Competence",t:"Industry and application-based content | New content that can be use globaly",s:"Not Started",p:"Medium",tp:"Content, SEO",c:"RWE",d:"Sep 30"},
+  {o:"Roadmap",t:"Q1-Q4 Ongoing - Technical SEO and IT Support",s:"In Progress",p:"Critical",tp:"Performance, SEO",c:"RWE",d:"Dec 31"},
+  {o:"Subsidiaries",t:"FACT-Finder Campaign Support | Häfele Connect Mesh_top of navigation",s:"Complete",p:"High",tp:"Content",c:"Denmark",d:"May 22"},
+  {o:"Subsidiaries",t:"FACT-Finder campaign support | Connect Mesh trigger search campaign creation",s:"Complete",p:"Medium",tp:"Content",c:"Denmark",d:"May 27"},
+  {o:"Subsidiaries",t:"Products Subcategory Page Improvement and Replication | Slido F-18 Page & Own Assortments for Slido (1)",s:"Complete",p:"Medium",tp:"Content, SEO",c:"Canada",d:"Mar 4"},
+  {o:"Subsidiaries",t:"Home Page Improvement | New layout implementation",s:"Complete",p:"Medium",tp:"Content",c:"France",d:"Jun 9"},
+  {o:"Subsidiaries",t:"Special Offers Page | Creation and implementation of the new Special Offers page",s:"Complete",p:"Medium",tp:"Content",c:"France",d:"Jun 9"},
+  {o:"Subsidiaries",t:"Clearance Deals Page | Adaptation and implementation of new Clearance page",s:"Complete",p:"Medium",tp:"Content",c:"France",d:"Jun 9"},
+  {o:"Subsidiaries",t:"FACT-Finder Clearance campaigns creation | Creation of 10 clearance categories campaigns",s:"Complete",p:"Medium",tp:"Content",c:"France",d:"Jun 9"},
+  {o:"Subsidiaries",t:"Products Category and Subcategories Page Improvement Mockups | Kitchen Equipment",s:"Complete",p:"Medium",tp:"Content, SEO, UX/UI",c:"Netherlands",d:"Jun 3"},
+  {o:"Subsidiaries",t:"Products Page Improvement Mockups | Brands",s:"Complete",p:"Medium",tp:"Content, SEO, UX/UI",c:"Netherlands",d:"Jun 3"},
+  {o:"Subsidiaries",t:"FACT-Finder Campaign Support (and training) | Slido D-LIne 11",s:"Complete",p:"Medium",tp:"Content",c:"Belgium",d:"Jun 8"},
+  {o:"Subsidiaries",t:"OHA page update | Déco Collection module",s:"Complete",p:"Medium",tp:"Content",c:"Canada",d:"Jun 8"},
+  {o:"Subsidiaries",t:"FACT-Finder Guide Creation | Lighting - Application Based - French version",s:"Complete",p:"Medium",tp:"Content",c:"Canada",d:"Jun 11"},
+  {o:"Subsidiaries",t:"FACT-Finder Campaign Support | Aluflex Campaign creation",s:"Complete",p:"Medium",tp:"Content",c:"Canada",d:"Jun 8"},
+  {o:"Subsidiaries",t:"Products Subcategory Page Creation | Cerniere in Acciaio Inox",s:"Complete",p:"Medium",tp:"Content",c:"Italy",d:"Jun 9"},
+  {o:"Subsidiaries",t:"Products Page Improvement | New modules added",s:"Complete",p:"Medium",tp:"Content",c:"Italy",d:"Jun 9"},
+  {o:"Subsidiaries",t:"Footer update | About section removal + Twitter for Instagram replacement",s:"Complete",p:"Low",tp:"Content",c:"France",d:"Jun 11"},
+  {o:"Subsidiaries",t:"Products Category Page Replication | Flap fittings",s:"In Progress",p:"Medium",tp:"Content",c:"Switzerland",d:"Jun 30"},
+];
+
+// ── SORT STATE ──
+let sortCol = null, sortDir = 1;
+const PRIO_ORDER = {'Critical':1,'High':2,'Medium':3,'Low':4};
+const STATUS_ORDER = {'In Progress':1,'Under Review':2,'Not Started':3,'Complete':4,'On Hold':5};
+const MONTH_ORDER = {Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12};
+
+function sortVal(r, col) {
+  switch(col) {
+    case 't': return r.t.toLowerCase();
+    case 's': return STATUS_ORDER[r.s] || 99;
+    case 'p': return PRIO_ORDER[r.p] || 99;
+    case 'c': return r.c.toLowerCase();
+    case 'o': return r.o.toLowerCase();
+    case 'q': return getQ(r) || 'Z';
+    case 'd': return MONTH_ORDER[r.d?.split(' ')[0]] || 99;
+    default:  return '';
+  }
+}
+
+function sortTable(col) {
+  if (sortCol === col) {
+    sortDir *= -1;
+  } else {
+    sortCol = col;
+    sortDir = 1;
+  }
+  // Update header icons
+  document.querySelectorAll('.sortable').forEach(th => {
+    th.classList.remove('asc','desc');
+  });
+  const th = document.querySelector(`[onclick="sortTable('${col}')"]`);
+  if (th) th.classList.add(sortDir === 1 ? 'asc' : 'desc');
+  renderAll();
+}
+const MN = {Jan:1,Feb:2,Mar:3,Apr:4,May:5,Jun:6,Jul:7,Aug:8,Sep:9,Oct:10,Nov:11,Dec:12};
+function getQ(r){
+  const m=(r.t.match(/\bQ([1-4])\b/i)||[])[1];
+  if(m) return 'Q'+m;
+  const mo=MN[r.d?.trim().split(' ')[0]];
+  return mo?(mo<=3?'Q1':mo<=6?'Q2':mo<=9?'Q3':'Q4'):null;
+}
+function getMonth(r){ return r.d?.trim().split(' ')[0]||null; }
+function cnt(a,fn){ return a.filter(fn).length; }
+function cntBy(a,k){ const m={}; a.forEach(x=>{m[x[k]]=(m[x[k]]||0)+1;}); return m; }
+function cntMulti(a,k){ const m={}; a.forEach(x=>{ x[k].split(',').forEach(v=>{ v=v.trim(); if(v) m[v]=(m[v]||0)+1; }); }); return m; }
+function allCountries(){ const s=new Set(); RAW.forEach(r=>r.c.split(',').forEach(x=>s.add(x.trim()))); return [...s].sort(); }
+
+// ── FILTER STATE ──
+const F={status:'all',priority:null,country:null,quarter:'all',month:'all'};
+let VIEW='all';
+
+function matches(r){
+  if(F.status!=='all'&&r.s!==F.status) return false;
+  if(F.priority&&r.p!==F.priority) return false;
+  if(F.country&&!r.c.split(',').map(x=>x.trim()).includes(F.country)) return false;
+  if(VIEW==='quarterly'&&F.quarter!=='all'&&getQ(r)!==F.quarter) return false;
+  if(VIEW==='monthly'&&F.month!=='all'&&getMonth(r)!==F.month) return false;
+  return true;
+}
+function filtered(){ return RAW.filter(matches); }
+
+function setF(dim,val,el){
+  const grp=el.closest('.fg');
+  grp.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  F[dim]=(dim==='status'||dim==='quarter'||dim==='month')?(F[dim]===val&&val!=='all'?'all':val):(F[dim]===val?null:val);
+  // re-activate correct chip
+  grp.querySelectorAll('.chip').forEach(c=>{
+    const oc=c.getAttribute('onclick')||'';
+    const mv=oc.match(/setF\('[^']+','([^']+)'/);
+    if(mv&&mv[1]===F[dim]) c.classList.add('active');
+    if((F[dim]==='all'||F[dim]===null)&&(mv&&mv[1]==='all')) c.classList.add('active');
+  });
+  if(F[dim]===null){grp.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));}
+  renderAll();
+}
+
+function setView(v,el){
+  VIEW=v;
+  document.querySelectorAll('#fbar>.fg:first-child .chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('qfg').style.display=v==='quarterly'?'flex':'none';
+  document.getElementById('mfg').style.display=v==='monthly'?'flex':'none';
+  if(v!=='quarterly') F.quarter='all';
+  if(v!=='monthly')   F.month='all';
+  renderAll();
+}
+
+// ── DROPDOWN ──
+function buildDD(){
+  const menu=document.getElementById('ddmenu');
+  menu.innerHTML=`<div class="dditem active" onclick="selCountry(null,this)">All Subsidiaries</div>`;
+  allCountries().forEach(c=>{
+    menu.innerHTML+=`<div class="dditem" onclick="selCountry('${c}',this)">${c}</div>`;
+  });
+}
+function selCountry(val,el){
+  F.country=val;
+  document.querySelectorAll('#ddmenu .dditem').forEach(i=>i.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('ddlabel').textContent=val||'All';
+  document.getElementById('ddbtn').classList.toggle('sel',!!val);
+  toggleDD(true);
+  renderAll();
+}
+function toggleDD(close){
+  const b=document.getElementById('ddbtn'),m=document.getElementById('ddmenu');
+  if(close){b.classList.remove('open');m.classList.remove('open');return;}
+  b.classList.toggle('open'); m.classList.toggle('open');
+}
+document.addEventListener('click',e=>{ if(!document.getElementById('ddwrap').contains(e.target)) toggleDD(true); });
+
+// ── DONUT ──
+function donut(id,data,cols){
+  const svg=document.getElementById(id); if(!svg) return;
+  const total=data.reduce((s,d)=>s+d.v,0);
+  if(!total){svg.innerHTML='';return;}
+  const cx=48,cy=48,r=34,sw=13;
+  svg.innerHTML='';
+  const bg=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  bg.setAttribute('cx',cx);bg.setAttribute('cy',cy);bg.setAttribute('r',r);
+  bg.setAttribute('fill','none');bg.setAttribute('stroke','var(--surface3)');bg.setAttribute('stroke-width',sw);
+  svg.appendChild(bg);
+  let a=-Math.PI/2;
+  data.forEach((d,i)=>{
+    const sl=(d.v/total)*2*Math.PI;
+    const x1=cx+r*Math.cos(a),y1=cy+r*Math.sin(a);
+    const x2=cx+r*Math.cos(a+sl),y2=cy+r*Math.sin(a+sl);
+    const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+    p.setAttribute('d',`M ${x1} ${y1} A ${r} ${r} 0 ${sl>Math.PI?1:0} 1 ${x2} ${y2}`);
+    p.setAttribute('fill','none');p.setAttribute('stroke',cols[i%cols.length]);
+    p.setAttribute('stroke-width',sw-2);p.setAttribute('stroke-linecap','round');
+    svg.appendChild(p); a+=sl;
+  });
+  const txt=document.createElementNS('http://www.w3.org/2000/svg','text');
+  txt.setAttribute('x',cx);txt.setAttribute('y',cy+6);txt.setAttribute('text-anchor','middle');
+  txt.setAttribute('fill','var(--text)');txt.setAttribute('font-size','16');
+  txt.setAttribute('font-family','Barlow Condensed,sans-serif');txt.setAttribute('font-weight','800');
+  txt.textContent=total; svg.appendChild(txt);
+}
+
+// ── BARS ──
+const COLS=['#C8102E','#e8943a','#4dbb8a','#5b7cfa','#9b7cff','#50c8e8','#f7d84a','#e879a0','#60c6b0','#ff8a65','#aad4f5','#c3a6ff'];
+function bars(id,pairs,max,showTotal){
+  const el=document.getElementById(id); if(!el) return;
+  const total=pairs.reduce((s,[,v])=>s+v,0);
+  el.innerHTML=pairs.map(([name,val],i)=>{
+    const pct=Math.round((val/Math.max(max,1))*100);
+    return `<div class="brow"><div class="bname" title="${name}">${name}</div><div class="btrack"><div class="bfill" style="width:${pct}%;background:${COLS[i%COLS.length]}"></div></div><div class="bval">${val}</div></div>`;
+  }).join('');
+  if(showTotal) el.innerHTML+=`<div class="btotal"><div class="btotal-lbl">Total</div><div style="flex:1"></div><div class="btotal-val">${total}</div></div>`;
+}
+
+// ── RENDER ──
+function renderAll(){
+  const f=filtered();
+  const active=f.length;
+  const co=cnt(f,x=>x.s==='Complete');
+  const ip=cnt(f,x=>x.s==='In Progress');
+  const ns=cnt(f,x=>x.s==='Not Started');
+  const ur=cnt(f,x=>x.s==='Under Review');
+
+  document.getElementById('kv-c').textContent=co;
+  document.getElementById('kv-i').textContent=ip;
+  document.getElementById('kv-n').textContent=ns;
+  document.getElementById('kv-r').textContent=ur;
+  document.getElementById('kp-c').textContent=active?Math.round(co/active*100)+'%':'0%';
+  document.getElementById('kp-i').textContent=active?Math.round(ip/active*100)+'%':'0%';
+  document.getElementById('kp-n').textContent=active?Math.round(ns/active*100)+'%':'0%';
+  document.getElementById('kp-r').textContent=active?Math.round(ur/active*100)+'%':'0%';
+
+  // Quarterly — always uses full dataset so progress is never zeroed by filters
+  const qs={Q1:{p:'Jan–Mar',c:0,t:0},Q2:{p:'Apr–Jun',c:0,t:0},Q3:{p:'Jul–Sep',c:0,t:0},Q4:{p:'Oct–Dec',c:0,t:0}};
+  RAW.forEach(r=>{ const q=getQ(r); if(q&&qs[q]){ qs[q].t++; if(r.s==='Complete') qs[q].c++; } });
+  document.getElementById('qgrid').innerHTML=['Q1','Q2','Q3','Q4'].map(q=>{
+    const d=qs[q],pct=d.t?Math.round(d.c/d.t*100):0;
+    return `<div class="qcard ${q.toLowerCase()}"><div class="qh"><div class="qlbl">${q}</div><div class="qpct">${pct}%</div></div><div class="qper">${d.p} · ${d.t} tasks</div><div class="qbar-bg"><div class="qbar-fill" style="width:${pct}%"></div></div><div class="qstats"><div class="qstat"><span>${d.c}</span> complete</div><div class="qstat"><span>${d.t-d.c}</span> remaining</div></div></div>`;
+  }).join('');
+
+  // Subsidiary bars
+  const sp=Object.entries(cntMulti(f,'c')).sort((a,b)=>b[1]-a[1]);
+  bars('sub-bars',sp,sp[0]?.[1]||1,true);
+  document.getElementById('cb-sub').textContent=sp.length+' subsidiaries';
+
+  // Type bars
+  const tp=Object.entries(cntMulti(f,'tp')).sort((a,b)=>b[1]-a[1]);
+  bars('type-bars',tp,tp[0]?.[1]||1,true);
+  document.getElementById('cb-type').textContent=tp.length+' types';
+
+  // Donuts
+  const pMap=cntBy(f,'p'),pOrd=['Critical','High','Medium','Low'],pCols=['#C8102E','#e8943a','#5b7cfa','#4dbb8a'];
+  const pd=pOrd.filter(x=>pMap[x]).map(x=>({k:x,v:pMap[x]}));
+  donut('d-prio',pd,pCols);
+  document.getElementById('l-prio').innerHTML=pd.map((d,i)=>`<div class="drow"><div class="ddot" style="background:${pCols[i]}"></div><div class="dname">${d.k}</div><div class="dval">${d.v}</div></div>`).join('');
+
+  const oMap=cntBy(f,'o'),oOrd=['Subsidiaries','Roadmap','Competence','HWW'],oCols=['#C8102E','#e8943a','#4dbb8a','#5b7cfa'];
+  const od=oOrd.filter(x=>oMap[x]).map(x=>({k:x,v:oMap[x]}));
+  donut('d-orig',od,oCols);
+  document.getElementById('l-orig').innerHTML=od.map((d,i)=>`<div class="drow"><div class="ddot" style="background:${oCols[i]}"></div><div class="dname">${d.k}</div><div class="dval">${d.v}</div></div>`).join('');
+
+  const sOrd=['Complete','In Progress','Not Started','Under Review'],sCols=['#4dbb8a','#e8943a','#7a7f8e','#C8102E'];
+  const sd=sOrd.map(x=>({k:x,v:cnt(f,r=>r.s===x)})).filter(d=>d.v>0);
+  donut('d-stat',sd,sCols);
+  document.getElementById('l-stat').innerHTML=sd.map((d,i)=>`<div class="drow"><div class="ddot" style="background:${sCols[i]}"></div><div class="dname" style="font-size:11px">${d.k}</div><div class="dval">${d.v}</div></div>`).join('');
+
+  // Table
+  let rows = [...f];
+  if (sortCol) {
+    rows.sort((a,b) => {
+      const av = sortVal(a, sortCol), bv = sortVal(b, sortCol);
+      return av < bv ? -sortDir : av > bv ? sortDir : 0;
+    });
+  }
+  document.getElementById('tcount').textContent=rows.length+' tasks';
+  const sm={'Complete':'sc','In Progress':'si','Not Started':'sn','Under Review':'sr','On Hold':'so'};
+  const pm={'Critical':'pcrit','High':'phigh','Medium':'pmed','Low':'plow'};
+  document.getElementById('tbody').innerHTML=rows.map(r=>{
+    const types=r.tp.split(',').map(x=>`<span class="ttag">${x.trim()}</span>`).join('');
+    const ctrs=r.c.split(',').map(x=>`<span class="ctag">${x.trim()}</span>`).join('');
+    return `<tr>
+      <td style="padding-left:22px;">
+        <div class="ttitle-wrap">
+          <div class="ttitle">${r.t}</div>
+          <div class="ttip">${r.t}</div>
+        </div>
+      </td>
+      <td><span class="spill ${sm[r.s]||''}">${r.s}</span></td>
+      <td><div class="pwrap"><span class="pdot ${pm[r.p]||''}"></span><span class="ptxt">${r.p}</span></div></td>
+      <td>${types}</td>
+      <td>${ctrs}</td>
+      <td><span class="obadge">${r.o}</span></td>
+      <td style="font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:12px;color:var(--text-muted);">${getQ(r)||'—'}</td>
+      <td style="color:var(--text-muted);white-space:nowrap;font-size:11px;">${r.d}</td>
+    </tr>`;
+  }).join('');
+}
+
+function toggleTheme(){
+  const dark=document.documentElement.getAttribute('data-theme')==='dark';
+  document.documentElement.setAttribute('data-theme',dark?'light':'dark');
+  document.getElementById('theme-btn').textContent=dark?'☾ Dark':'☀ Light';
+}
+
+buildDD();
+renderAll();
+</script>
+</body>
+</html>
