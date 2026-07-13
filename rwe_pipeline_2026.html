@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 Digital Experience Pipeline</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red: #C8102E;
+    --red-light: #f9eaed;
+    --dark: #1a1a1a;
+    --mid: #6b6b6b;
+    --border: #e4e4e4;
+    --bg: #f7f7f7;
+    --white: #ffffff;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+    padding: 32px 24px;
+    min-height: 1400px;
+  }
+
+  /* HEADER */
+  .page-header {
+    max-width: 1100px; margin: 0 auto 32px;
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 16px; flex-wrap: wrap;
+  }
+  .logo-block { display: flex; align-items: center; gap: 14px; }
+  .logo-square {
+    width: 40px; height: 40px; background: var(--red); border-radius: 6px;
+    display: grid; place-items: center; font-family: 'DM Mono', monospace;
+    font-weight: 500; color: #fff; font-size: 14px; letter-spacing: 0.03em; flex-shrink: 0;
+  }
+  .header-text h1 { font-size: 20px; font-weight: 600; color: var(--dark); line-height: 1.2; }
+  .header-text p  { font-size: 13px; color: var(--mid); margin-top: 2px; font-weight: 300; }
+  .edit-toggle {
+    display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--mid);
+    cursor: pointer; user-select: none; padding: 6px 14px;
+    border: 1.5px solid var(--border); border-radius: 6px; background: var(--white); transition: all 0.15s;
+  }
+  .edit-toggle:hover { border-color: var(--red); color: var(--red); }
+  .edit-toggle.active { border-color: var(--red); background: var(--red); color: #fff; }
+
+  /* SCOPE NOTE */
+  .scope-note {
+    max-width: 1100px; margin: 0 auto 20px;
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 12px 16px;
+    background: #fff8f9;
+    border: 1.5px solid #f2d6dc;
+    border-left: 3px solid var(--red);
+    border-radius: 8px;
+    font-size: 12.5px; color: var(--mid); font-weight: 300; line-height: 1.5;
+  }
+  .scope-note svg { color: var(--red); flex-shrink: 0; margin-top: 1px; }
+  .scope-note strong { color: var(--dark); font-weight: 600; }
+
+  /* ACCORDION */
+  .accordion-section { max-width: 1100px; margin: 0 auto 28px; display: flex; flex-direction: column; gap: 8px; }
+  .acc-item { background: var(--white); border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .acc-header {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 20px; background: none; border: none; cursor: pointer;
+    font-family: inherit; text-align: left; transition: background 0.15s;
+  }
+  .acc-header:hover { background: #fafafa; }
+  .acc-label { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--red); }
+  .acc-icon { color: var(--mid); transition: transform 0.25s ease; flex-shrink: 0; }
+  .acc-item.open .acc-icon { transform: rotate(180deg); }
+  .acc-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 0 20px;
+  }
+  .acc-item.open .acc-body { max-height: 300px; padding: 0 20px 16px; }
+  .acc-body ul { list-style: none; display: flex; flex-direction: column; gap: 7px; }
+  .acc-body ul li { font-size: 13px; color: var(--dark); font-weight: 400; padding-left: 14px; position: relative; line-height: 1.45; }
+  .acc-body ul li::before { content: ''; position: absolute; left: 0; top: 7px; width: 5px; height: 5px; border-radius: 50%; background: var(--red); opacity: 0.45; }
+
+  /* TABS */
+  .pipeline-section { max-width: 1100px; margin: 0 auto; }
+  .tab-bar { display: flex; gap: 4px; border-bottom: 2px solid var(--border); }
+  .tab {
+    padding: 10px 20px; font-size: 13px; font-weight: 500; color: var(--mid);
+    cursor: pointer; border-radius: 6px 6px 0 0; border: 1.5px solid transparent;
+    border-bottom: none; transition: all 0.15s; position: relative; bottom: -2px; background: transparent;
+  }
+  .tab:hover { color: var(--dark); background: var(--white); }
+  .tab.active { color: var(--red); background: var(--white); border-color: var(--border); border-bottom-color: var(--white); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .quarter-desc {
+    font-size: 13px; color: var(--mid); padding: 14px 18px;
+    background: var(--white); border: 1.5px solid var(--border);
+    border-top: none; border-bottom: none; font-weight: 300; line-height: 1.5;
+  }
+  .q-legend {
+    display: flex; flex-wrap: wrap; gap: 10px; padding: 10px 18px 12px;
+    background: var(--white); border: 1.5px solid var(--border); border-top: none; border-bottom: none;
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--mid); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* TABLE */
+  .table-wrap {
+    background: var(--white); border: 1.5px solid var(--border);
+    border-top: none; border-radius: 0 0 10px 10px; overflow: visible;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th {
+    text-align: left; padding: 11px 14px; font-size: 10.5px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--mid);
+    background: #fafafa; border-bottom: 1.5px solid var(--border); white-space: nowrap;
+  }
+  tbody tr { border-bottom: 1px solid #f0f0f0; transition: background 0.1s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #fcfcfc; }
+  tbody td { padding: 9px 14px; vertical-align: middle; color: var(--dark); line-height: 1.4; }
+  .topic-cell { font-weight: 500; min-width: 160px; }
+  .desc-cell { color: var(--mid); font-weight: 300; min-width: 200px; max-width: 300px; }
+  .empty-quarter { padding: 40px; text-align: center; color: var(--mid); font-size: 13px; }
+
+  /* BADGES */
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 4px;
+    font-size: 11px; font-weight: 500; white-space: nowrap; line-height: 1.7;
+  }
+  .badge-type       { background: #f0f0f0; color: #4a4a4a; }
+  .badge-solution   { background: #eef0ff; color: #3d40aa; }
+  .badge-workstream { background: #f0f0f0; color: #4a4a4a; }
+  .badge-Critical   { background: #f5d0d7; color: #8b0000; }
+  .badge-High       { background: #fce8ec; color: #C8102E; }
+  .badge-Medium     { background: #fef4e0; color: #c97a00; }
+  .badge-Low        { background: #e6f4ed; color: #1a7a4a; }
+  .badge-Trivial    { background: #f0f0f0; color: #6b6b6b; }
+  .badge-Complete      { background: #e6f4ed; color: #1a7a4a; }
+  .badge-In-progress   { background: #fef4e0; color: #c97a00; }
+  .badge-Not-started   { background: #efefef; color: #4a4a4a; }
+  .badge-Under-review  { background: #e8f0fe; color: #1a56c4; }
+
+  /* CUSTOM DROPDOWN */
+  .dd-wrap { position: relative; display: inline-block; }
+  .dd-trigger {
+    cursor: default; display: inline-flex; align-items: center; gap: 3px;
+    border-radius: 4px; transition: box-shadow 0.1s;
+  }
+  .edit-mode .dd-trigger { cursor: pointer; }
+  .edit-mode .dd-trigger:hover { box-shadow: 0 0 0 2px var(--border); }
+  .dd-arrow {
+    display: none; font-size: 9px; color: #aaa; margin-left: 1px; line-height: 1;
+  }
+  .edit-mode .dd-arrow { display: inline; }
+
+  .dd-menu {
+    display: none; position: absolute; top: calc(100% + 5px); left: 0;
+    z-index: 9999; background: var(--white); border: 1.5px solid var(--border);
+    border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    padding: 5px; min-width: 150px; white-space: nowrap;
+  }
+  .dd-menu.open { display: block; }
+  .dd-option {
+    display: block; width: 100%; padding: 4px 6px; margin: 1px 0;
+    border-radius: 5px; border: none; background: none;
+    cursor: pointer; font-family: inherit; font-size: 12px; text-align: left;
+    transition: background 0.1s;
+  }
+  .dd-option:hover { background: #f5f5f5; }
+  .dd-option .badge { pointer-events: none; }
+
+  /* NUDGE (REORDER) BUTTONS */
+  .row-btn.nudge { width: 20px; }
+  .row-btn.nudge.disabled { opacity: 0.18 !important; pointer-events: none; }
+  .edit-mode tbody tr:hover .row-btn.nudge.disabled { opacity: 0.18 !important; }
+
+  /* MOVE / COPY MENU */
+  .mv-wrap { position: relative; display: inline-block; }
+  .mv-menu {
+    display: none; position: absolute; top: calc(100% + 5px); right: 0;
+    z-index: 9999; background: var(--white); border: 1.5px solid var(--border);
+    border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    padding: 5px; min-width: 210px; white-space: nowrap; text-align: left;
+  }
+  .mv-menu.open { display: block; }
+  .mv-section {
+    font-size: 9.5px; font-weight: 600; letter-spacing: 0.09em;
+    text-transform: uppercase; color: var(--mid);
+    padding: 5px 8px 3px;
+  }
+  .mv-option {
+    display: block; width: 100%; padding: 6px 8px; margin: 1px 0;
+    border: none; border-radius: 5px; background: none; cursor: pointer;
+    font-family: inherit; font-size: 12px; color: var(--dark);
+    text-align: left; transition: background 0.1s;
+  }
+  .mv-option:hover { background: var(--red-light); color: var(--red); }
+  .mv-option em { color: var(--mid); font-style: normal; font-size: 11px; }
+  .mv-divider { height: 1px; background: var(--border); margin: 4px 2px; }
+
+  /* FLASH HIGHLIGHT ON ARRIVAL */
+  @keyframes rowFlash {
+    0%   { background: #fdf0d5; }
+    100% { background: transparent; }
+  }
+  .row-flash { animation: rowFlash 1.2s ease-out; }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translate(-50%, 20px);
+    z-index: 99999;
+    display: flex; align-items: center; gap: 12px;
+    background: var(--dark); color: #fff;
+    padding: 10px 12px 10px 16px; border-radius: 8px;
+    font-size: 13px; box-shadow: 0 8px 28px rgba(0,0,0,0.22);
+    opacity: 0; transition: opacity 0.25s, transform 0.25s;
+  }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+  .toast button {
+    background: rgba(255,255,255,0.14); color: #fff;
+    border: none; border-radius: 5px; padding: 4px 10px;
+    font-family: inherit; font-size: 12px; font-weight: 500; cursor: pointer;
+    transition: background 0.15s;
+  }
+  .toast button:hover { background: rgba(255,255,255,0.28); }
+
+  /* ROW ACTIONS */
+  .row-actions { display: flex; align-items: center; gap: 2px; }
+  .row-btn {
+    width: 26px; height: 26px; border: none; border-radius: 5px;
+    background: none; cursor: pointer; display: grid; place-items: center;
+    color: #ccc; transition: all 0.15s; font-family: inherit;
+    opacity: 0;
+  }
+  tbody tr:hover .row-btn { opacity: 1; }
+  .edit-mode .row-btn { opacity: 0.4; }
+  .edit-mode tbody tr:hover .row-btn { opacity: 1; }
+  .row-btn:hover { background: #f0f0f0; color: var(--dark); }
+  .row-btn.del:hover { background: var(--red-light); color: var(--red); }
+
+  /* EDITABLE TEXT */
+  .topic-span, .desc-span { outline: none; border-radius: 3px; display: inline; }
+  .edit-mode .topic-span,
+  .edit-mode .desc-span {
+    background: #fffbe6; outline: 1px dashed #e6c800;
+    padding: 1px 4px; border-radius: 3px; cursor: text;
+  }
+
+  /* ADD ROW */
+  .add-row-btn {
+    display: none; width: 100%; padding: 9px; background: none; border: none;
+    border-top: 1px dashed var(--border); color: var(--red);
+    font-size: 12px; cursor: pointer; font-family: inherit;
+    font-weight: 500; letter-spacing: 0.04em; transition: background 0.15s;
+  }
+  .edit-mode .add-row-btn { display: block; }
+  .add-row-btn:hover { background: var(--red-light); }
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="logo-block">
+    <div class="logo-square">RC</div>
+    <div class="header-text">
+      <h1>2026 Digital Experience Pipeline</h1>
+      <p>RWE Competence Centre · Digital Experience</p>
+    </div>
+  </div>
+  <button class="edit-toggle" id="editToggle" onclick="toggleEdit()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+    Edit
+  </button>
+</header>
+
+<div class="scope-note">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+  <span><strong>Scope:</strong> This pipeline covers the high-level, overarching initiatives only. Smaller tasks, day-to-day work and ad-hoc requests are handled outside this plan and are not listed here.</span>
+</div>
+
+<section class="accordion-section">
+  <div class="acc-item open" id="acc-0">
+    <button class="acc-header" onclick="toggleAcc(0)">
+      <span class="acc-label">Priorities &amp; Goals</span>
+      <svg class="acc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="acc-body">
+      <ul>
+        <li>Content gap closure: Identify and fill information gaps to ensure comprehensive topical authority.</li>
+        <li>UX excellence: Enhance user experience through intuitive content structures and layouts.</li>
+        <li>Performance optimization: Systematic SEO and CRO of all assets.</li>
+        <li>Journey-centric planning: Transition to a full-funnel content strategy aligned with the customer lifecycle.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="acc-item" id="acc-1">
+    <button class="acc-header" onclick="toggleAcc(1)">
+      <span class="acc-label">Strategic Execution</span>
+      <svg class="acc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="acc-body">
+      <ul>
+        <li>Global asset levering: Audit and adapt existing HWW content, ensuring high-quality localization for regional market relevance.</li>
+        <li>Growth-driven creation: Develop user-centric content focused on core KPIs: traffic, lead generation, registrations, and conversions.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="pipeline-section">
+  <div class="tab-bar">
+    <div class="tab active" onclick="switchTab(0)">Q1 — Laying the Foundations</div>
+    <div class="tab"        onclick="switchTab(1)">Q2 — Joining &amp; Assembling</div>
+    <div class="tab"        onclick="switchTab(2)">Q3 — Finishing &amp; Refining</div>
+    <div class="tab"        onclick="switchTab(3)">Q4 — Opening New Rooms</div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="tab-panel active" id="panel-0">
+    <div class="quarter-desc">Foundation &amp; Alignment — Formalize operational workflows, align local efforts with HWW editorial standards, launch keyword-driven optimization.</div>
+    <div class="q-legend">
+      <span class="legend-item"><span class="legend-dot" style="background:#1a7a4a"></span> Complete</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#c97a00"></span> In progress</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#aaa"></span> Not started</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#1a56c4"></span> Under review</span>
+    </div>
+    <div class="table-wrap">
+      <table id="table-0">
+        <thead><tr><th>Topic</th><th>Type</th><th>Solution</th><th>Workstream</th><th>Priority</th><th>Status</th><th>Description</th><th style="width:120px"></th></tr></thead>
+        <tbody id="tbody-0"></tbody>
+      </table>
+      <button class="add-row-btn" onclick="addRow(0)">+ Add row</button>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="tab-panel" id="panel-1">
+    <div class="quarter-desc">Expansion &amp; Capability Building — Complete category/sub-category pages, launch industry/application segments, kick off Inspiration Content, conduct SEO training.</div>
+    <div class="q-legend">
+      <span class="legend-item"><span class="legend-dot" style="background:#1a7a4a"></span> Complete</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#c97a00"></span> In progress</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#aaa"></span> Not started</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#1a56c4"></span> Under review</span>
+    </div>
+    <div class="table-wrap">
+      <table id="table-1">
+        <thead><tr><th>Topic</th><th>Type</th><th>Solution</th><th>Workstream</th><th>Priority</th><th>Status</th><th>Description</th><th style="width:120px"></th></tr></thead>
+        <tbody id="tbody-1"></tbody>
+      </table>
+      <button class="add-row-btn" onclick="addRow(1)">+ Add row</button>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="tab-panel" id="panel-2">
+    <div class="quarter-desc">Scalability &amp; Migration Prep — Finalize industry/application content, expand lifestyle content, map assets for First Spirit migration to ensure SEO continuity.</div>
+    <div class="q-legend">
+      <span class="legend-item"><span class="legend-dot" style="background:#1a7a4a"></span> Complete</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#c97a00"></span> In progress</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#aaa"></span> Not started</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#1a56c4"></span> Under review</span>
+    </div>
+    <div class="table-wrap">
+      <table id="table-2">
+        <thead><tr><th>Topic</th><th>Type</th><th>Solution</th><th>Workstream</th><th>Priority</th><th>Status</th><th>Description</th><th style="width:120px"></th></tr></thead>
+        <tbody id="tbody-2"></tbody>
+      </table>
+      <button class="add-row-btn" onclick="addRow(2)">+ Add row</button>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="tab-panel" id="panel-3">
+    <div class="quarter-desc">Optimization &amp; Review — Refine roadmap based on Q1–Q3 performance metrics and migration status. Finalize pending projects and set KPIs for the following year.</div>
+    <div class="q-legend">
+      <span class="legend-item"><span class="legend-dot" style="background:#1a7a4a"></span> Complete</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#c97a00"></span> In progress</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#aaa"></span> Not started</span>
+      <span class="legend-item"><span class="legend-dot" style="background:#1a56c4"></span> Under review</span>
+    </div>
+    <div class="table-wrap">
+      <table id="table-3">
+        <thead><tr><th>Topic</th><th>Type</th><th>Solution</th><th>Workstream</th><th>Priority</th><th>Status</th><th>Description</th><th style="width:120px"></th></tr></thead>
+        <tbody id="tbody-3"></tbody>
+      </table>
+      <button class="add-row-btn" onclick="addRow(3)">+ Add row</button>
+    </div>
+  </div>
+</section>
+
+<script>
+// ─── OPTION LISTS (from Data Validation tab) ──────────────────────────────────
+const OPTIONS = {
+  type:       ['Category','Subcategory','Inspiration','Home','Content Ideas','Keyword','Website'],
+  solution:   ['Guide','Module','Section','Page','Research','Blog','Explainer','Case Study','Document','Development'],
+  workstream: ['SEO','UX/UI','Content','Technical','Other'],
+  priority:   ['Critical','High','Medium','Low','Trivial'],
+  status:     ['Not started','In progress','Complete','Under review']
+};
+
+// ─── INITIAL DATA ─────────────────────────────────────────────────────────────
+const DATA = [
+  [ // Q1 — Laying the Foundations
+    {topic:'Cross-functional Keyword Research', type:'Keyword', solution:'Research',    workstream:'SEO',       priority:'High', status:'Complete',    desc:'Localized keyword research for each RWE market. Customer-centric, customer journey based content ideas generation.'},
+    {topic:'Website internal scoring system',   type:'Website', solution:'Document',    workstream:'Other',     priority:'High', status:'Complete',    desc:'Evaluation system to assess the quality of each subsidiary\'s website across three pillars: Content, SEO, and UX/UI.'},
+    {topic:'Performance',                       type:'Website', solution:'Development', workstream:'Technical', priority:'High', status:'In progress', desc:'Technical audit and support to improve website\'s performance. Together with HUK, HAC, and HNL (ongoing).'},
+    {topic:'Lighting',                          type:'Category',solution:'Section',     workstream:'Content',   priority:'High', status:'Complete',    desc:'Category and sub-categories improvement and replication. New Lighting catalogue Mar/2026.'},
+  ],
+  [ // Q2 — Joining & Assembling
+    {topic:'Handles & Knobs',  type:'Category', solution:'Section',   workstream:'Content', priority:'Medium', status:'Complete', desc:'Category and sub-categories improvement and replication.'},
+    {topic:'SXO Training',     type:'Website',  solution:'Explainer', workstream:'Other',   priority:'High',   status:'Complete', desc:'SXO training live session and materials.'},
+    {topic:'Lighting (guide)', type:'Category', solution:'Module',    workstream:'Content', priority:'Medium', status:'Complete', desc:'Application based guide creation and replication.'},
+  ],
+  [ // Q3 — Finishing & Refining
+    {topic:'Furniture & Living Solutions', type:'Category', solution:'Section', workstream:'Content', priority:'Medium', status:'In progress', desc:'Pages improvement and replication.'},
+    {topic:'Kitchen Organization',         type:'Category', solution:'Section', workstream:'Content', priority:'Medium', status:'In progress', desc:'Pages improvement and replication.'},
+    {topic:'Architectural Ironmongery',    type:'Category', solution:'Section', workstream:'Content', priority:'Medium', status:'Not started', desc:'Pages improvement and replication.'},
+  ],
+  [ // Q4 — Opening New Rooms
+    {topic:'Sliding, Folding & Tambour Door Fittings', type:'Category', solution:'Section',     workstream:'Content', priority:'Medium', status:'Not started', desc:'Pages improvement and replication.'},
+    {topic:'Tools & Consumables',                      type:'Category', solution:'Section',     workstream:'Content', priority:'Medium', status:'Not started', desc:'Pages improvement and replication.'},
+    {topic:'Content mapping',                          type:'Website',  solution:'Development', workstream:'Content', priority:'Medium', status:'Not started', desc:'Content mapping for First Spirit migration.'},
+  ]
+];
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let editMode = false;
+let openMenu = null;
+
+// ─── BADGE ────────────────────────────────────────────────────────────────────
+function badgeClass(kind, value) {
+  if (kind === 'priority') return `badge badge-${value}`;
+  if (kind === 'status')   return `badge badge-${value.replace(/\s+/g,'-')}`;
+  if (kind === 'solution') return 'badge badge-solution';
+  return 'badge badge-type'; // type, workstream
+}
+
+function badgeHTML(kind, value) {
+  return `<span class="${badgeClass(kind, value)}">${value}</span>`;
+}
+
+// ─── DROPDOWN CELL ────────────────────────────────────────────────────────────
+function makeDDCell(kind, value) {
+  const opts = OPTIONS[kind].map(o =>
+    `<button class="dd-option" onclick="pickOption(event,'${kind}','${o}',this)">${badgeHTML(kind, o)}</button>`
+  ).join('');
+  return `<div class="dd-wrap">
+    <span class="dd-trigger" data-kind="${kind}" data-value="${value}" onclick="toggleMenu(event,this)">
+      ${badgeHTML(kind, value)}<span class="dd-arrow">▾</span>
+    </span>
+    <div class="dd-menu">${opts}</div>
+  </div>`;
+}
+
+// ─── ACTIONS CELL ─────────────────────────────────────────────────────────────
+const QUARTERS = [
+  'Q1 — Laying the Foundations',
+  'Q2 — Joining & Assembling',
+  'Q3 — Finishing & Refining',
+  'Q4 — Opening New Rooms'
+];
+
+function makeActions() {
+  return `<td><div class="row-actions">
+    <button class="row-btn nudge" title="Move up" onclick="moveRow(this,-1)">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="18 15 12 9 6 15"/>
+      </svg>
+    </button>
+    <button class="row-btn nudge" title="Move down" onclick="moveRow(this,1)">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </button>
+    <div class="mv-wrap">
+      <button class="row-btn" title="Move or copy to another quarter" onclick="toggleMoveMenu(event,this)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+          <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/>
+        </svg>
+      </button>
+      <div class="mv-menu"></div>
+    </div>
+    <button class="row-btn" title="Duplicate row" onclick="duplicateRow(this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+      </svg>
+    </button>
+    <button class="row-btn del" title="Delete row" onclick="deleteRow(this)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+        <path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+      </svg>
+    </button>
+  </div></td>`;
+}
+
+// ─── REORDER WITHIN A QUARTER ────────────────────────────────────────────────
+function moveRow(btn, dir) {
+  const tr = btn.closest('tr');
+  const sibling = dir === -1 ? tr.previousElementSibling : tr.nextElementSibling;
+  if (!sibling || sibling.classList.contains('empty-row')) return; // already at the edge
+
+  if (dir === -1) sibling.before(tr);
+  else            sibling.after(tr);
+
+  tr.classList.add('row-flash');
+  setTimeout(() => tr.classList.remove('row-flash'), 700);
+  refreshNudgeStates();
+}
+
+// Dim the up-arrow on the first row and the down-arrow on the last
+function refreshNudgeStates() {
+  document.querySelectorAll('tbody').forEach(tbody => {
+    const rows = [...tbody.querySelectorAll('tr:not(.empty-row)')];
+    rows.forEach((tr, i) => {
+      const [up, down] = tr.querySelectorAll('.row-btn.nudge');
+      if (up)   up.classList.toggle('disabled',   i === 0);
+      if (down) down.classList.toggle('disabled', i === rows.length - 1);
+    });
+  });
+}
+
+// ─── MOVE / COPY BETWEEN QUARTERS ────────────────────────────────────────────
+function currentQuarterOf(tr) {
+  return parseInt(tr.closest('tbody').id.split('-')[1], 10);
+}
+
+function toggleMoveMenu(e, btn) {
+  e.stopPropagation();
+  if (!editMode) return;
+  const menu = btn.nextElementSibling;
+  const wasOpen = menu.classList.contains('open');
+  closeAllMenus();
+  if (wasOpen) return;
+
+  const tr  = btn.closest('tr');
+  const cur = currentQuarterOf(tr);
+
+  let html = '<div class="mv-section">Move to</div>';
+  QUARTERS.forEach((q, i) => {
+    if (i === cur) return;
+    html += `<button class="mv-option" onclick="transferRow(event,this,${i},false)">${q}</button>`;
+  });
+  html += '<div class="mv-divider"></div><div class="mv-section">Copy to</div>';
+  QUARTERS.forEach((q, i) => {
+    html += `<button class="mv-option" onclick="transferRow(event,this,${i},true)">${q}${i === cur ? ' <em>(this one)</em>' : ''}</button>`;
+  });
+
+  menu.innerHTML = html;
+  menu.classList.add('open');
+}
+
+function transferRow(e, btn, targetQ, isCopy) {
+  e.stopPropagation();
+  const tr    = btn.closest('tr');
+  const data  = getRowData(tr);
+  const src   = tr.closest('tbody');
+
+  // Build the row in the destination table
+  const dest  = document.getElementById(`tbody-${targetQ}`);
+  const empty = dest.querySelector('.empty-row');
+  if (empty) empty.remove();
+
+  const newTr = buildRow(data);
+  if (editMode) newTr.querySelectorAll('.topic-span, .desc-span').forEach(el => el.contentEditable = 'true');
+  dest.appendChild(newTr);
+  refreshNudgeStates();
+  newTr.classList.add('row-flash');
+  setTimeout(() => newTr.classList.remove('row-flash'), 1200);
+
+  // If moving (not copying), remove the original
+  if (!isCopy) {
+    tr.remove();
+    if (!src.querySelector('tr:not(.empty-row)')) showEmpty(src);
+  }
+
+  closeAllMenus();
+  showToast(`${isCopy ? 'Copied' : 'Moved'} to ${QUARTERS[targetQ]}`, targetQ);
+}
+
+// ─── TOAST ────────────────────────────────────────────────────────────────────
+function showToast(msg, goToQ) {
+  document.querySelectorAll('.toast').forEach(t => t.remove());
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `<span>${msg}</span><button onclick="switchTab(${goToQ});this.parentNode.remove();">View</button>`;
+  document.body.appendChild(t);
+  requestAnimationFrame(() => t.classList.add('show'));
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 300); }, 4000);
+}
+
+// ─── BUILD ROW ────────────────────────────────────────────────────────────────
+function buildRow(d) {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td class="topic-cell"><span class="topic-span" contenteditable="false">${d.topic}</span></td>
+    <td>${makeDDCell('type',       d.type)}</td>
+    <td>${makeDDCell('solution',   d.solution)}</td>
+    <td>${makeDDCell('workstream', d.workstream)}</td>
+    <td>${makeDDCell('priority',   d.priority)}</td>
+    <td>${makeDDCell('status',     d.status)}</td>
+    <td class="desc-cell"><span class="desc-span" contenteditable="false">${d.desc}</span></td>
+    ${makeActions()}`;
+  return tr;
+}
+
+function showEmpty(tbody) {
+  const cols = tbody.closest('table').querySelectorAll('thead th').length;
+  tbody.innerHTML = `<tr class="empty-row"><td colspan="${cols}" class="empty-quarter">No items — use Edit mode to add rows.</td></tr>`;
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+function init() {
+  DATA.forEach((rows, qi) => {
+    const tbody = document.getElementById(`tbody-${qi}`);
+    if (rows.length === 0) { showEmpty(tbody); return; }
+    rows.forEach(d => tbody.appendChild(buildRow(d)));
+  });
+}
+
+// ─── DROPDOWN INTERACTION ─────────────────────────────────────────────────────
+function toggleMenu(e, trigger) {
+  e.stopPropagation();
+  if (!editMode) return;
+  const menu = trigger.nextElementSibling;
+  const wasOpen = menu.classList.contains('open');
+  closeAllMenus();
+  if (!wasOpen) { menu.classList.add('open'); openMenu = menu; }
+}
+
+function pickOption(e, kind, value, btn) {
+  e.stopPropagation();
+  const menu    = btn.closest('.dd-menu');
+  const trigger = menu.previousElementSibling;
+  trigger.dataset.value = value;
+  // Replace badge content (keep the arrow span)
+  const arrow = trigger.querySelector('.dd-arrow');
+  trigger.innerHTML = badgeHTML(kind, value);
+  trigger.appendChild(arrow || (() => { const s = document.createElement('span'); s.className='dd-arrow'; s.textContent='▾'; return s; })());
+  menu.classList.remove('open');
+  openMenu = null;
+}
+
+function closeAllMenus() {
+  document.querySelectorAll('.dd-menu.open, .mv-menu.open').forEach(m => m.classList.remove('open'));
+  openMenu = null;
+}
+document.addEventListener('click', closeAllMenus);
+
+// ─── EDIT TOGGLE ──────────────────────────────────────────────────────────────
+function toggleEdit() {
+  editMode = !editMode;
+  closeAllMenus();
+  const btn = document.getElementById('editToggle');
+  btn.classList.toggle('active', editMode);
+  btn.innerHTML = editMode
+    ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Done`
+    : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Edit`;
+  document.body.classList.toggle('edit-mode', editMode);
+  document.querySelectorAll('.topic-span, .desc-span').forEach(el => {
+    el.contentEditable = editMode ? 'true' : 'false';
+  });
+}
+
+// ─── TAB SWITCH ───────────────────────────────────────────────────────────────
+function switchTab(idx) {
+  document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+  document.querySelectorAll('.tab-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
+  closeAllMenus();
+}
+
+// ─── ROW OPS ──────────────────────────────────────────────────────────────────
+function getRowData(tr) {
+  const get = (kind) => tr.querySelector(`.dd-trigger[data-kind="${kind}"]`).dataset.value;
+  return {
+    topic:       tr.querySelector('.topic-span').innerText,
+    type:        get('type'),
+    solution:    get('solution'),
+    workstream:  get('workstream'),
+    priority:    get('priority'),
+    status:      get('status'),
+    desc:        tr.querySelector('.desc-span').innerText,
+  };
+}
+
+function addRow(qi) {
+  const tbody = document.getElementById(`tbody-${qi}`);
+  const empty = tbody.querySelector('.empty-row');
+  if (empty) empty.remove();
+  const tr = buildRow({topic:'New topic',type:'Category',solution:'Page',workstream:'Content',priority:'Medium',status:'Not started',desc:'Description'});
+  tbody.appendChild(tr);
+  refreshNudgeStates();
+  if (editMode) tr.querySelector('.topic-span').contentEditable = 'true';
+  tr.querySelector('.topic-span').focus();
+}
+
+function duplicateRow(btn) {
+  const tr = btn.closest('tr');
+  const d  = getRowData(tr);
+  const newTr = buildRow(d);
+  if (editMode) newTr.querySelectorAll('.topic-span, .desc-span').forEach(el => el.contentEditable = 'true');
+  tr.after(newTr);
+  refreshNudgeStates();
+}
+
+function deleteRow(btn) {
+  const tr    = btn.closest('tr');
+  const tbody = tr.closest('tbody');
+  tr.remove();
+  if (!tbody.querySelector('tr:not(.empty-row)')) showEmpty(tbody);
+  refreshNudgeStates();
+}
+
+// ─── ACCORDION ────────────────────────────────────────────────────────────────
+function toggleAcc(idx) {
+  const item = document.getElementById(`acc-${idx}`);
+  item.classList.toggle('open');
+}
+
+// ─── GO ───────────────────────────────────────────────────────────────────────
+init();
+refreshNudgeStates();
+
+// AUTO-RESIZE FOR SHAREPOINT IFRAME
+function notifyHeight() {
+  const h = document.documentElement.scrollHeight;
+  window.parent.postMessage({ type: 'resize', height: h }, '*');
+  window.parent.postMessage(JSON.stringify({ spfxHeight: h }), '*');
+}
+window.addEventListener('load', notifyHeight);
+new MutationObserver(notifyHeight).observe(document.body, { childList: true, subtree: true });
+setInterval(notifyHeight, 800);
+</script>
+</body>
+</html>
