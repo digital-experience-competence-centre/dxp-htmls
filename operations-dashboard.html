@@ -234,7 +234,7 @@ body { background:var(--bg); color:var(--text); font-family:'Barlow',sans-serif;
     <span class="htitle">Website Operations Dashboard</span>
   </div>
   <div class="header-right">
-    <div class="period-badge">Jan – 12 Jun 2026</div>
+    <div class="period-badge">Jan – 31 Jul 2026</div>
     <button class="hbtn" id="theme-btn" onclick="toggleTheme()">☾ Dark</button>
     <button class="export-btn" onclick="window.print()">↓ Export PDF</button>
   </div>
@@ -300,6 +300,7 @@ body { background:var(--bg); color:var(--text); font-family:'Barlow',sans-serif;
     <span class="chip" onclick="setF('month','Apr',this)">Apr</span>
     <span class="chip" onclick="setF('month','May',this)">May</span>
     <span class="chip" onclick="setF('month','Jun',this)">Jun</span>
+    <span class="chip" onclick="setF('month','Jul',this)">Jul</span>
   </div>
 
 </div>
@@ -356,7 +357,7 @@ body { background:var(--bg); color:var(--text); font-family:'Barlow',sans-serif;
 
 <footer class="footer">
   <div>Häfele · Digital Team · <strong>Website Operations Dashboard 2026</strong> · Notion Export</div>
-  <div>Data period: 1 Jan – 12 Jun 2026</div>
+  <div>Data period: 1 Jan – 31 Jul 2026</div>
 </footer>
 
 <script>
@@ -399,7 +400,7 @@ const RAW = [
   {o:"Competence",t:"Feedback about Homepage Structure and Guidelines HWW",s:"Complete",p:"Critical",tp:"Content, General Feedback, SEO",c:"RWE",d:"Apr 24"},
   {o:"Subsidiaries",t:"About Haefele Page Replication | Own House Assortments Lighting",s:"Complete",p:"Medium",tp:"Content, SEO",c:"Belgium",d:"Apr 27"},
   {o:"Competence",t:"Guidelines OT Page Setup Metadata",s:"Complete",p:"Critical",tp:"Performance, SEO",c:"RWE",d:"Apr 29"},
-  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Handles and Knobs",s:"In Progress",p:"Critical",tp:"Content, SEO, UX/UI",c:"Austria, Belgium, Canada, Denmark, France, Ireland, Italy, Spain, Switzerland",d:"Jun 30"},
+  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Handles and Knobs",s:"Complete",p:"Critical",tp:"Content, SEO, UX/UI",c:"Austria, Belgium, Canada, Denmark, France, Ireland, Italy, Spain, Switzerland",d:"Jun 30"},
   {o:"Subsidiaries",t:"FACT-Finder Campaign Support | Essentials",s:"Complete",p:"Medium",tp:"Troubleshooting",c:"United Kingdom",d:"Apr 30"},
   {o:"Subsidiaries",t:"FACT-Finder Guide Replication | Lighting Guide HIT > HDK",s:"Complete",p:"Medium",tp:"Content, Feature Request",c:"Denmark",d:"Apr 30"},
   {o:"Subsidiaries",t:"FACT-Finder campaign Support and Improvement | Metalla and Matrix",s:"Complete",p:"Medium",tp:"Content, Troubleshooting",c:"Canada",d:"May 5"},
@@ -408,41 +409,70 @@ const RAW = [
   {o:"Competence",t:"HPT domain redirection support",s:"In Progress",p:"Critical",tp:"SEO, Troubleshooting",c:"Portugal",d:"Jun 30"},
   {o:"Subsidiaries",t:"Troubleshooting | SEO tools whitelisting (incl. agencies IPs for crawling)",s:"Complete",p:"Medium",tp:"SEO, Troubleshooting",c:"RWE",d:"Jun 30"},
   {o:"Roadmap",t:"Q2 Subsidiary specific content training that focus' on SEO - Schedule Training Sessions",s:"Complete",p:"Critical",tp:"SEO",c:"RWE",d:"Jun 30"},
-  {o:"Competence",t:"Inspiration Section Improvement | https://www.haefele.at/de/info/objekt-hotel/360-objekt-kompetenz/30420/",s:"In Progress",p:"Critical",tp:"Content, SEO",c:"RWE",d:"Jun 30"},
-  {o:"Roadmap",t:"Q2 Online content to be published for all core categories for every subsidiary",s:"In Progress",p:"Critical",tp:"Content, SEO",c:"RWE",d:"Jun 30"},
+  {o:"Competence",t:"Inspiration Section Improvement | https://www.haefele.at/de/info/objekt-hotel/360-objekt-kompetenz/30420/",s:"In Progress",p:"Critical",tp:"Content, SEO",c:"RWE",d:"Dec 31"},
+  {o:"Roadmap",t:"Q2 Online content to be published for all core categories for every subsidiary",s:"In Progress",p:"Critical",tp:"Content, SEO",c:"RWE",d:"Nov 30"},
   {o:"Roadmap",t:"Q2 Create approval/review process to prevent rouge non optimized content.",s:"Complete",p:"Critical",tp:"Content, SEO",c:"RWE",d:"Jun 30"},
   {o:"Roadmap",t:"Q2 Continue to define best practice and use data to lead developments through for OW",s:"Not Started",p:"Critical",tp:"Content, SEO, UX/UI",c:"RWE",d:"Jun 30"},
-  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Tools & Consumables",s:"Not Started",p:"Medium",tp:"Content, SEO",c:"RWE",d:"Jun 30"},
-  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Sliding, Folding & Tambour Door Fittings",s:"Not Started",p:"Medium",tp:"Content, SEO",c:"RWE",d:"Jun 30"},
-  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Furniture & Living Solution",s:"In Progress",p:"Medium",tp:"Content, SEO",c:"Austria, RWE",d:"Jun 30"},
-  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Architectural Ironmongery",s:"Not Started",p:"Medium",tp:"Content, SEO",c:"RWE",d:"Jun 30"},
-  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Kitchen Organization",s:"In Progress",p:"Medium",tp:"Content, SEO",c:"Netherlands, RWE",d:"Jun 30"},
-  {o:"Subsidiaries",t:"About Haefele Page Replication | Own House Assortments Slido",s:"Under Review",p:"Medium",tp:"Content, SEO",c:"RWE, United Kingdom",d:"Jul 30"},
-  {o:"Subsidiaries",t:"Products Subcategory Page Improvement | Slido",s:"Under Review",p:"Medium",tp:"Content, SEO",c:"RWE, United Kingdom",d:"Jul 30"},
-  {o:"Roadmap",t:"Q3 Define customer personas for online customers",s:"Not Started",p:"Critical",tp:"Content, SEO",c:"RWE",d:"Sep 30"},
-  {o:"Roadmap",t:"Q3 Industry specific content created for dedicated sections onsite",s:"Not Started",p:"Critical",tp:"Content, SEO",c:"RWE",d:"Sep 30"},
+  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Tools & Consumables",s:"Not Started",p:"Medium",tp:"Content, SEO",c:"RWE",d:"Nov 30"},
+  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Sliding, Folding & Tambour Door Fittings",s:"Not Started",p:"Medium",tp:"Content, SEO",c:"RWE",d:"Nov 30"},
+  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Furniture & Living Solution",s:"Under Review",p:"Medium",tp:"Content, SEO",c:"Austria, RWE",d:"Sep 30"},
+  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Architectural Ironmongery",s:"Not Started",p:"Medium",tp:"Content, SEO",c:"RWE",d:"Sep 30"},
+  {o:"Subsidiaries",t:"Products Category Section Improvement and Replication | Kitchen Organization",s:"In Progress",p:"Medium",tp:"Content, SEO",c:"Netherlands, RWE",d:"Sep 30"},
+  {o:"Subsidiaries",t:"About Haefele Page Replication | Own House Assortments Slido",s:"Under Review",p:"Medium",tp:"Content, SEO",c:"RWE, United Kingdom",d:"Nov 30"},
+  {o:"Subsidiaries",t:"Products Subcategory Page Improvement | Slido",s:"Under Review",p:"Medium",tp:"Content, SEO",c:"RWE, United Kingdom",d:"Nov 30"},
+  {o:"Roadmap",t:"Q3 Define customer personas for online customers",s:"Not Started",p:"Critical",tp:"Content, SEO",c:"RWE",d:"Dec 31"},
+  {o:"Roadmap",t:"Q3 Industry specific content created for dedicated sections onsite",s:"Not Started",p:"Critical",tp:"Content, SEO",c:"RWE",d:"Dec 31"},
   {o:"Roadmap",t:"Q3 Populate Metadata",s:"Not Started",p:"Critical",tp:"SEO",c:"RWE",d:"Sep 30"},
-  {o:"HWW",t:"Content Mapping for FirstSpirit Migration",s:"Not Started",p:"Medium",tp:"Content, SEO, Troubleshooting",c:"RWE",d:"Sep 30"},
+  {o:"HWW",t:"Content Mapping for FirstSpirit Migration",s:"Not Started",p:"Medium",tp:"Content, SEO, Troubleshooting",c:"RWE",d:"Nov 30"},
   {o:"Competence",t:"Blog & Editorial Plan for Evergreen Content",s:"Not Started",p:"Medium",tp:"Content, SEO",c:"RWE",d:"Sep 30"},
   {o:"Competence",t:"Industry and application-based content | New content that can be use globaly",s:"Not Started",p:"Medium",tp:"Content, SEO",c:"RWE",d:"Sep 30"},
   {o:"Roadmap",t:"Q1-Q4 Ongoing - Technical SEO and IT Support",s:"In Progress",p:"Critical",tp:"Performance, SEO",c:"RWE",d:"Dec 31"},
   {o:"Subsidiaries",t:"FACT-Finder Campaign Support | Häfele Connect Mesh_top of navigation",s:"Complete",p:"High",tp:"Content",c:"Denmark",d:"May 22"},
   {o:"Subsidiaries",t:"FACT-Finder campaign support | Connect Mesh trigger search campaign creation",s:"Complete",p:"Medium",tp:"Content",c:"Denmark",d:"May 27"},
-  {o:"Subsidiaries",t:"Products Subcategory Page Improvement and Replication | Slido F-18 Page & Own Assortments for Slido (1)",s:"Complete",p:"Medium",tp:"Content, SEO",c:"Canada",d:"Mar 4"},
   {o:"Subsidiaries",t:"Home Page Improvement | New layout implementation",s:"Complete",p:"Medium",tp:"Content",c:"France",d:"Jun 9"},
   {o:"Subsidiaries",t:"Special Offers Page | Creation and implementation of the new Special Offers page",s:"Complete",p:"Medium",tp:"Content",c:"France",d:"Jun 9"},
   {o:"Subsidiaries",t:"Clearance Deals Page | Adaptation and implementation of new Clearance page",s:"Complete",p:"Medium",tp:"Content",c:"France",d:"Jun 9"},
   {o:"Subsidiaries",t:"FACT-Finder Clearance campaigns creation | Creation of 10 clearance categories campaigns",s:"Complete",p:"Medium",tp:"Content",c:"France",d:"Jun 9"},
   {o:"Subsidiaries",t:"Products Category and Subcategories Page Improvement Mockups | Kitchen Equipment",s:"Complete",p:"Medium",tp:"Content, SEO, UX/UI",c:"Netherlands",d:"Jun 3"},
   {o:"Subsidiaries",t:"Products Page Improvement Mockups | Brands",s:"Complete",p:"Medium",tp:"Content, SEO, UX/UI",c:"Netherlands",d:"Jun 3"},
-  {o:"Subsidiaries",t:"FACT-Finder Campaign Support (and training) | Slido D-LIne 11",s:"Complete",p:"Medium",tp:"Content",c:"Belgium",d:"Jun 8"},
+  {o:"Subsidiaries",t:"FACT-Finder Campaign Support (and training) | Slido D-Line 11",s:"Complete",p:"Medium",tp:"Content",c:"Belgium",d:"Jun 8"},
   {o:"Subsidiaries",t:"OHA page update | Déco Collection module",s:"Complete",p:"Medium",tp:"Content",c:"Canada",d:"Jun 8"},
   {o:"Subsidiaries",t:"FACT-Finder Guide Creation | Lighting - Application Based - French version",s:"Complete",p:"Medium",tp:"Content",c:"Canada",d:"Jun 11"},
   {o:"Subsidiaries",t:"FACT-Finder Campaign Support | Aluflex Campaign creation",s:"Complete",p:"Medium",tp:"Content",c:"Canada",d:"Jun 8"},
   {o:"Subsidiaries",t:"Products Subcategory Page Creation | Cerniere in Acciaio Inox",s:"Complete",p:"Medium",tp:"Content",c:"Italy",d:"Jun 9"},
   {o:"Subsidiaries",t:"Products Page Improvement | New modules added",s:"Complete",p:"Medium",tp:"Content",c:"Italy",d:"Jun 9"},
   {o:"Subsidiaries",t:"Footer update | About section removal + Twitter for Instagram replacement",s:"Complete",p:"Low",tp:"Content",c:"France",d:"Jun 11"},
-  {o:"Subsidiaries",t:"Products Category Page Replication | Flap fittings",s:"In Progress",p:"Medium",tp:"Content",c:"Switzerland",d:"Jun 30"},
+  {o:"Subsidiaries",t:"Products Category Page Replication | Flap fittings",s:"Complete",p:"Medium",tp:"Content",c:"Switzerland",d:"Jul 31"},
+  {o:"Subsidiaries",t:"Services Page Replication | https://www.hafele.com/us/en/info/services/project-planning-and-customization/project-services/lighting-design-services/87177/",s:"Not Started",p:"Medium",tp:"Content, SEO, UX/UI",c:"Spain",d:"Aug 31"},
+  {o:"Subsidiaries",t:"Products Page Replication | https://www.hafele.co.uk/en/products/products/global_one_pim_catalog/",s:"In Progress",p:"Medium",tp:"Content, SEO, UX/UI",c:"Spain",d:"Jul 18"},
+  {o:"Subsidiaries",t:"Products Subcategory Section Replication | Slido D-Line11",s:"Not Started",p:"Medium",tp:"Content, SEO, UX/UI",c:"Belgium",d:"Jun 30"},
+  {o:"Subsidiaries",t:"FACT-Finder Guide Update | Lighting Guide HDK new section (LED strips)",s:"In Progress",p:"Medium",tp:"Content, Feature Request",c:"Denmark",d:"Jun 5"},
+  {o:"Competence",t:"Training Session for OpenText and FactFinder",s:"Complete",p:"Medium",tp:"Content, SEO, UX/UI",c:"Spain",d:"Jul 1"},
+  {o:"HWW",t:"Contact /Support Page Update | Website Linking to Vulnerability Disclosure Policy for RWE",s:"Complete",p:"Critical",tp:"Content",c:"RWE",d:"Jul 10"},
+  {o:"Competence",t:"SXO Training Session | Materials, live session, and video support",s:"Complete",p:"High",tp:"Content, Performance, SEO, UX/UI",c:"RWE",d:"Jun 30"},
+  {o:"Competence",t:"Q2 Presentation and Prep",s:"Complete",p:"High",tp:"nan",c:"RWE",d:"Jul 17"},
+  {o:"Subsidiaries",t:"Project Requirements (SEO and Content) Doc Review for HUK",s:"Complete",p:"Medium",tp:"Advanced Stream, Content, SEO",c:"RWE, United Kingdom",d:"Jul 15"},
+  {o:"Subsidiaries",t:"Investigate Cerniere Inox (Häfele Metalla) indexation issue - find an alternative solution, possibly a new LP",s:"Under Review",p:"Medium",tp:"Content, SEO",c:"Italy",d:"Jul 24"},
+  {o:"Subsidiaries",t:"New Promo Mundial Page (T20) + FF Campaign Updates and Troubleshooting",s:"Complete",p:"Medium",tp:"Content",c:"Spain",d:"Jul 10"},
+  {o:"Subsidiaries",t:"Special Offers Page Adjustment and Update | Correction of multiple teaser modules with errors",s:"Complete",p:"Medium",tp:"Content",c:"Spain",d:"Jul 9"},
+  {o:"Subsidiaries",t:"Section links update | Own House Assortments",s:"Complete",p:"High",tp:"Content",c:"Portugal",d:"Jul 16"},
+  {o:"Subsidiaries",t:"Categorize door hinges on the website following HAC's structure",s:"Under Review",p:"Medium",tp:"Content, SEO",c:"Canada",d:"Jul 30"},
+  {o:"HWW",t:"Feedback on Category Structure Proposal HDE for HWW",s:"Complete",p:"Medium",tp:"Content, SEO, UX/UI",c:"RWE",d:"Jul 28"},
+  {o:"HWW",t:"New structure proposal for Architectural Irongomery - Review and suggest",s:"In Progress",p:"Medium",tp:"Content, General Feedback, SEO, UX/UI",c:"RWE, United Kingdom",d:"Jul 31"},
+  {o:"HWW",t:"New structure proposal for Architectural Irongomery - Planning for replication within RWE (checklist, etc.)",s:"In Progress",p:"Medium",tp:"Content, General Feedback, SEO, UX/UI",c:"RWE, United Kingdom",d:"nan"},
+  {o:"Subsidiaries",t:"FACT-Finder Campaign Support | Clearance Campaign Fix",s:"Complete",p:"Medium",tp:"Content, SEO",c:"Spain",d:"Aug 7"},
+  {o:"HWW",t:"Feedback on Category Structure Proposal HDE for HWW",s:"Complete",p:"Medium",tp:"Content, SEO, UX/UI",c:"RWE",d:"Jul 31"},
+  {o:"Subsidiaries",t:"Fixing Furniture and Living Solutions Category and Subcategory Pages Links",s:"In Progress",p:"Medium",tp:"Content, SEO, UX/UI",c:"Austria",d:"Aug 6"},
+  {o:"Subsidiaries",t:"Mapping Furniture and Living Solutions Category and Subcategory Pages Metadata",s:"Complete",p:"Medium",tp:"SEO",c:"Austria",d:"Aug 4"},
+  {o:"Subsidiaries",t:"Products Category Page Improvement and Replication | Häfele Startec – Poignée de porte",s:"In Progress",p:"Medium",tp:"Content, SEO, UX/UI",c:"France",d:"Aug 7"},
+  {o:"Subsidiaries",t:"Products Category Page Improvement and Replication | Häfele Startec – Poignées de fenêtres",s:"In Progress",p:"Medium",tp:"Content, SEO, UX/UI",c:"France",d:"Aug 7"},
+  {o:"Subsidiaries",t:"Products Category Page Improvement and Replication | Häfele Startec – Gâches électriques & ferme-portes",s:"In Progress",p:"Medium",tp:"Content, SEO, UX/UI",c:"France",d:"Aug 7"},
+  {o:"Subsidiaries",t:"Products Category Page Improvement and Replication | Häfele Startec – Accessoires de sécurité",s:"In Progress",p:"Medium",tp:"Content, SEO, UX/UI",c:"France",d:"Aug 7"},
+  {o:"Subsidiaries",t:"Products Category Page Improvement and Replication | Häfele Startec – Paumelles de porte",s:"In Progress",p:"Medium",tp:"Content, SEO, UX/UI",c:"France",d:"Aug 7"},
+  {o:"Subsidiaries",t:"Products Category Page Improvement and Replication | Häfele Startec – Serrures & pênes dormant",s:"In Progress",p:"Medium",tp:"Content, SEO, UX/UI",c:"France",d:"Aug 7"},
+  {o:"Subsidiaries",t:"Products Category Page Improvement and Replication | Häfele Startec – Portes en verre & ferrures pour portes en verre",s:"In Progress",p:"Medium",tp:"Content, SEO, UX/UI",c:"France",d:"Aug 7"},
+  {o:"Subsidiaries",t:"Products Category Page Improvement and Replication | Häfele Startec – Accessoires de porte",s:"In Progress",p:"Medium",tp:"Content, SEO, UX/UI",c:"France",d:"Aug 7"},
+  {o:"Subsidiaries",t:"FACT-Finder Campaign Creation | Haefele Startec Pages",s:"In Progress",p:"Medium",tp:"Content, SEO",c:"France",d:"Aug 10"},
 ];
 
 // ── SORT STATE ──
